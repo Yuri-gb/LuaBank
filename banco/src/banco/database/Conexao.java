@@ -9,7 +9,7 @@ public class Conexao {
         try {
             Class.forName("org.sqlite.JDBC");
 
-            String caminho = System.getProperty("user.dir") + "/banco/data";
+            String caminho = System.getProperty("user.dir") + "/data";
 
             new java.io.File(caminho).mkdirs();
 

@@ -27,3 +27,5 @@ replay_pid*
 .vscode/
 .idea/
 out/
+data/*.db
+data/
