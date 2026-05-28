@@ -1,8 +1,8 @@
-package banco.dao;
+package dao;
 
 import java.sql.ResultSet;
 
-import banco.database.DatabaseUtil;
+import database.DatabaseUtil;
 import model.Conta;
 import model.ContaNormal;
 import model.Titular;

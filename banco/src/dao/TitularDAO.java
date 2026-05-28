@@ -1,9 +1,9 @@
-package banco.dao;
+package dao;
 
 
 import java.sql.ResultSet;
 
-import banco.database.DatabaseUtil;
+import database.DatabaseUtil;
 import model.Titular;
 
 public class TitularDAO {

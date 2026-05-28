@@ -1,8 +1,6 @@
 # Arquitetura do Sistema
 
-## Estrutura Geral
-
-O projeto está organizado em módulos separados por responsabilidade, visando facilitar manutenção, organização e escalabilidade do sistema.
+O projeto está organizado em módulos separados por responsabilidade, visando facilitar manutenção, organização e escalabilidade do sistema. 
 
 ---
 
@@ -23,25 +21,28 @@ Responsável pela interação do usuário com o sistema via terminal.
 Responsável pelo sistema de autenticação e controle de acesso.
 
 ### Autenticavel.java
-Define comportamentos relacionados à autenticação.
+Interface que define comportamentos relacionados à autenticação.
 
 ### AuthService.java
 Gerencia validações e operações de login.
 
 ---
 
-## src/banco/dao
-Responsável pela persistência de dados.
+## src/dao
+Responsável pela persistência e manipulação de dados no banco SQLite.
 
 ### ContaDAO.java
-Gerencia operações relacionadas às contas.
+Gerencia operações relacionadas às contas bancárias.
 
 ### TitularDAO.java
 Gerencia operações relacionadas aos titulares.
 
+### TransacaoDAO.java
+Gerencia persistência e consultas das transações bancárias.
+
 ---
 
-## src/banco/database
+## src/database
 Responsável pela configuração e conexão com o banco de dados.
 
 ### Conexao.java
@@ -70,10 +71,40 @@ Representa cartões vinculados às contas.
 ### Titular.java
 Representa os titulares das contas.
 
+### Transacao.java
+Representa uma movimentação bancária realizada no sistema.
+
+Possui informações como:
+- valor
+- tipo da operação
+- data
+- descrição
+- identificador da transação
+
+---
+
+## src/transacao
+Responsável pelas regras e comportamentos relacionados às movimentações bancárias.
+
+### Transacional.java
+Interface que define comportamentos transacionais do sistema.
+
+### TransacaoService.java
+Responsável pelas regras de negócio das transações.
+
+Gerencia funcionalidades como:
+- registro de movimentações
+- geração de extrato
+- validações de operações
+- histórico de transações
+
 ---
 
 ## data
 Armazena os arquivos físicos do banco SQLite.
+
+### banco.db
+Banco de dados principal do sistema.
 
 ---
 
@@ -84,3 +115,10 @@ Bibliotecas externas utilizadas pelo sistema.
 
 ## docs
 Documentação técnica e organizacional do projeto.
+
+Contém:
+- arquitetura
+- requisitos
+- roadmap
+- regras de negócio
+- documentação técnica

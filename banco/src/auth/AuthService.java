@@ -1,6 +1,6 @@
 package auth;
 
-import banco.dao.TitularDAO;
+import dao.TitularDAO;
 import model.Titular;
 
 public class AuthService {

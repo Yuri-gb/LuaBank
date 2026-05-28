@@ -3,7 +3,7 @@ package app;
 import java.util.Scanner;
 
 import auth.AuthService;
-import banco.dao.TitularDAO;
+import dao.TitularDAO;
 import model.Titular;
 
 public class Menu {
@@ -77,13 +77,13 @@ public class Menu {
 
         if (t != null) {
             System.out.println("Login realizado!");
-            menuBanco(t); // 🔥 chama o menu interno
+            menuBanco(t); //  chama o menu interno
         } else {
             System.out.println("Erro no login!");
         }
     }
 
-    // 🔥 MENU DO BANCO (o que faltava)
+    //  MENU DO BANCO (o que faltava)
     private void menuBanco(Titular titular) {
 
         int opcao = -1;
@@ -125,7 +125,7 @@ public class Menu {
                     break;
 
                 case 4:
-                    titular.getConta().mostrarCartao(); // 🔥 polimorfismo
+                    titular.getConta().mostrarCartao(); // polimorfismo
                     break;
 
                 case 0:
