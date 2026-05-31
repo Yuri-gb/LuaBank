@@ -2,9 +2,14 @@ package app;
 
 import java.util.Scanner;
 
-import auth.AuthService;
 import dao.TitularDAO;
+import dao.TransacaoDAO;
+import dao.ContaDAO;
+
 import model.Titular;
+import service.AuthService;
+import service.ContaService;
+
 
 public class Menu {
 
@@ -13,7 +18,8 @@ public class Menu {
     public void iniciar() {
 
         TitularDAO.criarTabela();
-
+        TransacaoDAO.criarTabela();
+        ContaDAO.criarTabela();
         int opcao = 0;
 
         while (opcao != 3) {
@@ -62,6 +68,7 @@ public class Menu {
             System.out.println("Email já existe!");
         } else {
             TitularDAO.inserirTitular(nome, email, cpf, idade, senha);
+            ContaService.criarConta(TitularDAO.selecionarTitularPorEmail(email));
             System.out.println("Conta criada!");
         }
     }
@@ -115,13 +122,13 @@ public class Menu {
                 case 2:
                     System.out.println("Valor para depositar:");
                     double deposito = scanner.nextDouble();
-                    titular.getConta().depositar(deposito);
+                    ContaService.depositar(titular.getConta(), deposito);
                     break;
 
                 case 3:
                     System.out.println("Valor para sacar:");
                     double saque = scanner.nextDouble();
-                    titular.getConta().sacar(saque);
+                    ContaService.sacar(titular.getConta(), saque);
                     break;
 
                 case 4:

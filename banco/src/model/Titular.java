@@ -1,9 +1,8 @@
 package model;
 
-import auth.Autenticavel;
 
-public class Titular implements Autenticavel {
 
+public class Titular{
     private int id;
     private String nome;
     private int idade;
@@ -13,24 +12,17 @@ public class Titular implements Autenticavel {
 
     private Conta conta;
 
-    // 🔹 Construtor completo (quando cria manualmente)
-    public Titular(int id, String nome, int idade, String cpf, String email, String senha) {
-        this.id = id;
+    //  Construtor completo (quando cria manualmente)
+    public Titular( String nome, int idade, String cpf, String email, String senha) {
         this.nome = nome;
         this.idade = idade;
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
 
-        // 🔥 Define o tipo de conta automaticamente
-        if (idade < 18) {
-            this.conta = new ContaMenor(this);
-        } else {
-            this.conta = new ContaNormal(this);
-        }
     }
 
-    // 🔹 Construtor vazio (IMPORTANTE pro DAO)
+    //  Construtor vazio (IMPORTANTE pro DAO)
     public Titular() {
     }
 
@@ -58,6 +50,10 @@ public class Titular implements Autenticavel {
 
     public Conta getConta() {
         return conta;
+    }
+
+    public String getSenha() {
+        return senha;
     }
 
     // ================= SETTERS =================
@@ -90,20 +86,5 @@ public class Titular implements Autenticavel {
         this.conta = conta;
     }
 
-    // ================= LOGIN =================
 
-    @Override
-    public boolean autenticar(String email, String senha) {
-        return email != null && senha != null &&
-               email.equals(this.email) &&
-               senha.equals(this.senha);
-    }
-
-    public void inicializarConta() {
-        if (idade < 18) {
-            this.conta = new ContaMenor(this);
-        } else {
-            this.conta = new ContaNormal(this);
-        }
-}
 }

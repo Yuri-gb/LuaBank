@@ -5,13 +5,11 @@ public class Conta {
     protected double saldo;
     protected int numeroConta;
     protected Titular titular;
+    private int id;
 
-    private static int contador = 1; // 🔥 gera número automático
-
-    // 🔹 Construtor
+    // Construtor
     public Conta(Titular titular) {
         this.titular = titular;
-        this.numeroConta = contador++; // número único
         this.saldo = 0;
     }
 
@@ -28,38 +26,34 @@ public class Conta {
     public Titular getTitular() {
         return titular;
     }
+    public int getId() {
+        return id;
+    }
+
+    // ================= SETTERS =================
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public void setNumeroConta(int numeroConta) {
+        this.numeroConta = numeroConta;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     // ================= MÉTODOS =================
 
-    public void depositar(double valor) {
-        if (valor > 0) {
-            saldo += valor;
-        } else {
-            System.out.println("Valor inválido para depósito.");
-        }
-    }
 
-    public boolean sacar(double valor) {
-        if (valor <= 0) {
-            System.out.println("Valor inválido.");
-            return false;
-        }
 
-        if (saldo >= valor) {
-            saldo -= valor;
-            return true;
-        } else {
-            System.out.println("Saldo insuficiente.");
-            return false;
-        }
-    }
-
-    // 🔥 Base para polimorfismo (crédito)
+    // Isso aqui vai ser movido para o service do cartão mais por enquanto vai ficar por aqui 
     public void credito(double valor) {
         System.out.println("Crédito não disponível para esta conta.");
     }
 
-    // 🔥 Base para polimorfismo (cartão)
+    // 
     public void mostrarCartao() {
         System.out.println("Conta não possui cartão.");
     }
