@@ -2,9 +2,8 @@ package app;
 
 import java.util.Scanner;
 
-import dao.TitularDAO;
-import dao.TransacaoDAO;
-import dao.ContaDAO;
+
+import database.DatabaseInitializer;
 
 import model.Titular;
 import service.AuthService;
@@ -13,32 +12,53 @@ import service.ContaService;
 
 public class Menu {
 
+    private void mostrarMenu(
+        String[] menu
+) {
+
+    for (String linha : menu) {
+
+        System.out.println(
+            linha
+        );
+    }
+}
+
     private Scanner scanner = new Scanner(System.in);
 
+    // Iniciar o menu
     public void iniciar() {
-
-        TitularDAO.criarTabela();
-        TransacaoDAO.criarTabela();
-        ContaDAO.criarTabela();
+        DatabaseInitializer.inicializar();
         int opcao = 0;
 
         while (opcao != 3) {
 
-            System.out.println("\n=== BANCO ===");
-            System.out.println("1 - Criar conta");
-            System.out.println("2 - Fazer login");
-            System.out.println("3 - Sair");
+            mostrarMenu(
+                new String[] {
 
+                    "\n=== BANCO ===",
+
+                    "1 - Criar conta",
+
+                    "2 - Fazer login",
+
+                    "3 - Sair"
+                }
+            );
             try {
+
                 opcao = scanner.nextInt();
                 scanner.nextLine();
+
             } catch (Exception e) {
+
                 System.out.println("Entrada inválida!");
                 scanner.nextLine();
                 continue;
             }
 
             switch (opcao) {
+
                 case 1 -> criarConta();
                 case 2 -> login();
                 case 3 -> System.out.println("Encerrando...");
@@ -47,7 +67,9 @@ public class Menu {
         }
     }
 
-    private void criarConta() {
+    // criar conta
+     private void criarConta() {
+
         System.out.print("Nome: ");
         String nome = scanner.nextLine();
 
@@ -64,16 +86,27 @@ public class Menu {
         System.out.print("Senha: ");
         String senha = scanner.nextLine();
 
-        if (AuthService.emailExiste(email)) {
-            System.out.println("Email já existe!");
-        } else {
-            TitularDAO.inserirTitular(nome, email, cpf, idade, senha);
-            ContaService.criarConta(TitularDAO.selecionarTitularPorEmail(email));
-            System.out.println("Conta criada!");
+        Titular titular =
+            AuthService.addConta(
+                nome,
+                email,
+                cpf,
+                idade,
+                senha
+            );
+
+        if (titular != null) {
+
+            System.out.println(
+                "Conta criada!"
+            );
         }
+
     }
 
+    // Login
     private void login() {
+
         System.out.print("Email: ");
         String email = scanner.nextLine();
 
@@ -83,33 +116,48 @@ public class Menu {
         Titular t = AuthService.login(email, senha);
 
         if (t != null) {
+
             System.out.println("Login realizado!");
             menuBanco(t); //  chama o menu interno
+
         } else {
             System.out.println("Erro no login!");
         }
     }
 
-    //  MENU DO BANCO (o que faltava)
+    //  MENU DO BANCO
     private void menuBanco(Titular titular) {
 
         int opcao = -1;
 
         while (opcao != 0) {
 
-            System.out.println("\n=== MENU BANCO ===");
-            System.out.println("1 - Ver saldo");
-            System.out.println("2 - Depositar");
-            System.out.println("3 - Sacar");
-            System.out.println("4 - Ver dados do cartão");
-            System.out.println("0 - Sair");
+            mostrarMenu(
+                new String[] {
+
+                    "\n=== MENU BANCO ===",
+
+                    "1 - Ver saldo",
+
+                    "2 - Depositar",
+
+                    "3 - Sacar",
+
+                    "4 - Ver dados do cartão",
+
+                    "0 - Sair"
+                }
+            );
 
             try {
                 opcao = scanner.nextInt();
+
             } catch (Exception e) {
+
                 System.out.println("Entrada inválida!");
                 scanner.nextLine();
                 opcao = -1;
+
                 continue;
             }
 

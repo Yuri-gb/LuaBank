@@ -55,6 +55,8 @@ public class AuthService {
             return false;
         }
 
+        cpf = cpf.replaceAll("\\D", "");
+        
         if (cpf.length() != 11) {
 
             System.out.println(
@@ -100,27 +102,79 @@ public class AuthService {
                 );
     }
 
-    // Login
-public static Titular login(
-        String email,
-        String senha) {
 
-    Titular titular =
-        TitularDAO.selecionarTitularPorEmail(email);
 
-    if (!autenticar(titular, senha)) {
-        return null;
-    }
+    //Login
+    public static Titular login(
+            String email,
+            String senha) {
 
-    Conta conta =
-        ContaDAO.buscarPorTitular(
-            titular.getId(),
-            titular
+        Titular titular =
+            TitularDAO.selecionarTitularPorEmail(email);
+
+        if (!autenticar(titular, senha)) {
+            return null;
+        }
+
+        Conta conta =
+            ContaDAO.buscarPorTitular(
+                titular.getId(),
+                titular
+            );
+
+        titular.setConta(conta);
+
+        return titular;
+        }
+
+
+
+    // Registrar titular e criar conta
+    public static Titular addConta(
+
+            String nome,
+            String email,
+            String cpf,
+            int idade,
+            String senha
+
+    ) {
+
+        if (!validarCadastro(
+                nome,
+                email,
+                cpf,
+                idade,
+                senha
+        )) {
+
+            return null;
+        }
+
+        TitularDAO.inserirTitular(
+                nome,
+                email,
+                cpf,
+                idade,
+                senha
         );
 
-    titular.setConta(conta);
+        Titular titular =
+                TitularDAO
+                        .selecionarTitularPorEmail(
+                                email
+                        );
 
-    return titular;
-       }
-    
+        Conta conta =
+                ContaService
+                        .criarConta(
+                                titular
+                        );
+
+        titular.setConta(
+                conta
+        );
+
+        return titular;
+    }
 }
