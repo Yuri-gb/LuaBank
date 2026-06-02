@@ -1,8 +1,18 @@
 package dao;
 
-/* import java.time.LocalDateTime;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import model.Transacao; */
+import java.sql.Statement;
+
+
+import database.Conexao;
+import model.Conta;
+import model.TipoTransacao;
+import model.Transacao; 
 
 public class TransacaoDAO {
 
@@ -35,7 +45,7 @@ public class TransacaoDAO {
         database.DatabaseUtil.executar(sql);
     }
 
-    /**public static void inserirTransacao(Transacao transacao) {
+    public static void inserirTransacao(Transacao transacao) {
 
         Integer contaOrigem =
             (transacao.getContaOrigem() != null)
@@ -47,31 +57,94 @@ public class TransacaoDAO {
                 ? transacao.getContaDestino().getId()
                 : null;
 
-        String sql = String.format("""
-            
+        String sql = String.format(
+            java.util.Locale.US,
+            """
             INSERT INTO transacao
             (tipo, valor, data, conta_origem, conta_destino)
 
             VALUES
             ('%s', %f, '%s', %s, %s);
+            """,
 
-        """,
+            transacao.getTipo().name(),
+            transacao.getValor(),
+            transacao.getData(),
 
-        transacao.getTipo().name(),
+            (contaOrigem != null)
+                ? contaOrigem.toString()
+                : "NULL",
 
-        transacao.getValor(),
-
-        transacao.getData(),
-
-        (contaOrigem != null)
-            ? contaOrigem.toString()
-            : "NULL",
-
-        (contaDestino != null)
-            ? contaDestino.toString()
-            : "NULL"
+            (contaDestino != null)
+                ? contaDestino.toString()
+                : "NULL"
         );
 
-        database.DatabaseUtil.executar(sql);
-    }*/
+                database.DatabaseUtil.executar(sql);
+            }
+public static List<Transacao> buscarPorConta(int contaId) {
+
+    List<Transacao> transacoes =
+            new ArrayList<>();
+
+    String sql = String.format(
+        """
+        SELECT
+            tipo,
+            valor,
+            data
+
+        FROM transacao
+
+        WHERE
+            conta_origem = %d
+            OR conta_destino = %d
+
+        ORDER BY data DESC;
+        """,
+
+        contaId,
+        contaId
+    );
+
+    try (
+        Connection conn = Conexao.conectar();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql)
+    ) {
+
+        while (rs.next()) {
+
+            Transacao transacao =
+                    new Transacao();
+
+            transacao.setTipo(
+                TipoTransacao.valueOf(
+                    rs.getString("tipo")
+                )
+            );
+
+            transacao.setValor(
+                rs.getDouble("valor")
+            );
+
+            transacao.setData(
+                LocalDateTime.parse(
+                    rs.getString("data")
+                )
+            );
+
+            transacoes.add(
+                transacao
+            );
+        }
+
+    } catch (Exception e) {
+
+        e.printStackTrace();
+    }
+
+    return transacoes;
 }
+}
+    

@@ -8,7 +8,7 @@ import database.DatabaseInitializer;
 import model.Titular;
 import service.AuthService;
 import service.ContaService;
-
+import service.TransacaoService;
 
 public class Menu {
 
@@ -143,7 +143,7 @@ public class Menu {
 
                     "3 - Sacar",
 
-                    "4 - Ver dados do cartão",
+                    "4 - Ver extrato",
 
                     "0 - Sair"
                 }
@@ -170,17 +170,17 @@ public class Menu {
                 case 2:
                     System.out.println("Valor para depositar:");
                     double deposito = scanner.nextDouble();
-                    ContaService.depositar(titular.getConta(), deposito);
+                    TransacaoService.depositar(titular.getConta(), deposito);
                     break;
 
                 case 3:
                     System.out.println("Valor para sacar:");
                     double saque = scanner.nextDouble();
-                    ContaService.sacar(titular.getConta(), saque);
+                    TransacaoService.sacar(titular.getConta(), saque);
                     break;
 
                 case 4:
-                    titular.getConta().mostrarCartao(); // polimorfismo
+                    TransacaoService.verExtrato(titular.getConta());
                     break;
 
                 case 0:

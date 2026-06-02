@@ -59,3 +59,15 @@ O sistema deve permitir a visualização do saldo atual da conta.
 ## [RF007] Visualizar dados da conta
 Descrição:
 O sistema deve permitir a visualização das informações da conta e do titular.
+
+## [RF008] Visualizar extrato
+
+Descrição:
+O sistema deve permitir a visualização do histórico de transações da conta.
+
+---
+
+## [RF009] Registrar transações
+
+Descrição:
+O sistema deve registrar depósitos, saques e transferências realizadas pelos usuários.

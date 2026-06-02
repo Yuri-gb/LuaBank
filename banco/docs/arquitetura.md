@@ -1,124 +1,331 @@
 # Arquitetura do Sistema
 
-O projeto está organizado em módulos separados por responsabilidade, visando facilitar manutenção, organização e escalabilidade do sistema. 
+O projeto está organizado em módulos separados por responsabilidade, visando facilitar manutenção, organização, reutilização de código e escalabilidade do sistema.
+
+A arquitetura segue o padrão de separação em camadas, onde cada módulo possui uma responsabilidade específica dentro da aplicação.
 
 ---
 
 # Estrutura de Pastas
 
 ## src/app
-Responsável pela execução principal do sistema.
+
+Responsável pela execução principal do sistema e interação com o usuário.
 
 ### Main.java
+
 Ponto de entrada da aplicação.
 
+Responsável por iniciar o sistema.
+
 ### Menu.java
-Responsável pela interação do usuário com o sistema via terminal.
+
+Responsável pela interação com o usuário através do terminal.
+
+Funções principais:
+
+* Exibição dos menus
+* Recebimento de entradas do usuário
+* Encaminhamento das solicitações para as camadas de serviço
 
 ---
 
 ## src/auth
+
 Responsável pelo sistema de autenticação e controle de acesso.
 
 ### Autenticavel.java
+
 Interface que define comportamentos relacionados à autenticação.
 
 ### AuthService.java
-Gerencia validações e operações de login.
+
+Responsável pelas regras de negócio relacionadas à autenticação.
+
+Funções:
+
+* Cadastro de usuários
+* Login
+* Validação de credenciais
+* Verificação de email duplicado
+* Verificação de CPF duplicado
+* Validação de dados cadastrais
 
 ---
 
 ## src/dao
-Responsável pela persistência e manipulação de dados no banco SQLite.
+
+Responsável pela persistência e recuperação de dados no banco SQLite.
 
 ### ContaDAO.java
+
 Gerencia operações relacionadas às contas bancárias.
 
+Responsabilidades:
+
+* Inserir contas
+* Buscar contas
+* Atualizar saldo
+* Atualizar número da conta
+
 ### TitularDAO.java
+
 Gerencia operações relacionadas aos titulares.
 
+Responsabilidades:
+
+* Inserir titulares
+* Buscar titulares
+* Consultar usuários por email
+* Consultar usuários por CPF
+
 ### TransacaoDAO.java
-Gerencia persistência e consultas das transações bancárias.
+
+Gerencia operações relacionadas às transações bancárias.
+
+Responsabilidades:
+
+* Registrar transações
+* Buscar histórico de movimentações
+* Consultar transações por conta
+* Gerar dados para extrato
 
 ---
 
 ## src/database
-Responsável pela configuração e conexão com o banco de dados.
+
+Responsável pela configuração, inicialização e conexão com o banco de dados.
 
 ### Conexao.java
-Gerencia a conexão com o SQLite.
+
+Gerencia a conexão com o banco SQLite.
 
 ### DatabaseUtil.java
-Fornece utilitários auxiliares para manipulação do banco.
+
+Fornece métodos auxiliares para execução de comandos SQL.
+
+### DatabaseInitializer.java
+
+Responsável pela criação e inicialização das tabelas do sistema.
+
+Funções:
+
+* Criar tabela de titulares
+* Criar tabela de contas
+* Criar tabela de transações
 
 ---
 
 ## src/model
+
 Contém as entidades principais do sistema.
 
+### Titular.java
+
+Representa o usuário proprietário da conta.
+
+Principais atributos:
+
+* id
+* nome
+* idade
+* cpf
+* email
+* senha
+
 ### Conta.java
-Classe base das contas bancárias.
+
+Representa uma conta bancária.
+
+Principais atributos:
+
+* id
+* número da conta
+* saldo
+* titular
 
 ### ContaNormal.java
-Representa contas comuns.
+
+Representa contas bancárias comuns.
 
 ### ContaMenor.java
-Representa contas para menores de idade.
+
+Representa contas destinadas a menores de idade.
 
 ### Cartao.java
+
 Representa cartões vinculados às contas.
 
-### Titular.java
-Representa os titulares das contas.
-
 ### Transacao.java
-Representa uma movimentação bancária realizada no sistema.
 
-Possui informações como:
-- valor
-- tipo da operação
-- data
-- descrição
-- identificador da transação
+Representa uma movimentação financeira realizada no sistema.
+
+Principais atributos:
+
+* id
+* tipo
+* valor
+* data
+* conta de origem
+* conta de destino
+
+Tipos suportados:
+
+* DEPOSITO
+* SAQUE
+* TRANSFERENCIA
+
+---
+
+## src/service
+
+Responsável pelas regras de negócio da aplicação.
+
+### AuthService.java
+
+Gerencia autenticação e validação de usuários.
+
+### ContaService.java
+
+Gerencia operações relacionadas às contas.
+
+Responsabilidades:
+
+* Criação de contas
+* Geração do número da conta
+* Atualização de saldo
+
+### TransacaoService.java
+
+Gerencia operações financeiras.
+
+Responsabilidades:
+
+* Depósito
+* Saque
+* Transferência
+* Registro de movimentações
+* Geração de extrato
+* Histórico de transações
+* Validação de operações financeiras
 
 ---
 
 ## src/transacao
-Responsável pelas regras e comportamentos relacionados às movimentações bancárias.
+
+Responsável pelas abstrações relacionadas às transações do sistema.
 
 ### Transacional.java
-Interface que define comportamentos transacionais do sistema.
 
-### TransacaoService.java
-Responsável pelas regras de negócio das transações.
+Interface destinada à definição de comportamentos transacionais comuns.
 
-Gerencia funcionalidades como:
-- registro de movimentações
-- geração de extrato
-- validações de operações
-- histórico de transações
+Atualmente reservada para futuras expansões do sistema.
+
+Possíveis usos futuros:
+
+* Pix
+* TED
+* DOC
+* Pagamentos
+* Transferências especializadas
 
 ---
 
 ## data
-Armazena os arquivos físicos do banco SQLite.
+
+Armazena os arquivos físicos do banco de dados.
 
 ### banco.db
-Banco de dados principal do sistema.
+
+Banco de dados SQLite utilizado pela aplicação.
+
+Responsável por armazenar:
+
+* Titulares
+* Contas
+* Transações
 
 ---
 
 ## lib
-Bibliotecas externas utilizadas pelo sistema.
+
+Armazena bibliotecas externas utilizadas pelo projeto.
+
+Exemplo:
+
+* JDBC SQLite Driver
 
 ---
 
 ## docs
-Documentação técnica e organizacional do projeto.
 
-Contém:
-- arquitetura
-- requisitos
-- roadmap
-- regras de negócio
-- documentação técnica
+Contém toda a documentação do projeto.
+
+Arquivos:
+
+* arquitetura.md
+* requisitos.md
+* casos-de-uso.md
+* regras-de-negocio.md
+* roadmap.md
+
+---
+
+# Fluxo da Aplicação
+
+```text
+Usuário
+    ↓
+Menu
+    ↓
+Service
+    ↓
+DAO
+    ↓
+SQLite
+```
+
+Exemplo:
+
+```text
+Usuário
+    ↓
+Menu
+    ↓
+TransacaoService
+    ↓
+TransacaoDAO
+    ↓
+Banco de Dados
+```
+
+---
+
+# Objetivos Arquiteturais
+
+* Separação de responsabilidades
+* Facilidade de manutenção
+* Escalabilidade
+* Reutilização de código
+* Preparação para migração para API REST
+* Facilitar futura integração com interface web
+
+---
+
+# Evolução Planejada
+
+V1
+↓
+Sistema Console + SQLite
+
+V2
+↓
+API REST com Spring Boot
+
+V3
+↓
+Interface Web
+
+Resultado
+↓
+Sistema Bancário Completo

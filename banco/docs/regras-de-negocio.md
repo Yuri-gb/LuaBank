@@ -29,3 +29,19 @@ Transferências somente poderão ocorrer entre contas válidas.
 
 ## RN005 - Persistência
 As informações do sistema devem permanecer salvas após o encerramento da aplicação.rias contas desde que o email seja diferente 
+
+## RN006 - Registro obrigatório
+
+Toda operação financeira deve gerar um registro de transação.
+
+---
+
+## RN007 - Extrato bancário
+
+O extrato deve exibir as transações da conta ordenadas da mais recente para a mais antiga.
+
+---
+
+## RN008 - Integridade da transferência
+
+Uma transferência deve atualizar simultaneamente a conta de origem e a conta de destino.

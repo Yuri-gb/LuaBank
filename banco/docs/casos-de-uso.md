@@ -109,3 +109,17 @@ RF007 - Visualizar dados da conta
 3. Usuário seleciona visualizar dados
 4. Sistema busca dados da conta
 5. Sistema exibe informações do titular e da conta
+
+
+## CU008 - Visualizar extrato
+
+Relacionado ao requisito:
+RF008 - Visualizar extrato
+
+### Fluxo principal
+
+1. Usuário realiza login
+2. Sistema exibe menu bancário
+3. Usuário seleciona visualizar extrato
+4. Sistema busca as transações da conta
+5. Sistema exibe o histórico ordenado por data
