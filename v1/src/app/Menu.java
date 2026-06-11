@@ -7,7 +7,7 @@ import database.DatabaseInitializer;
 
 import model.Titular;
 import service.AuthService;
-import service.ContaService;
+
 import service.TransacaoService;
 
 public class Menu {

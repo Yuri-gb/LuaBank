@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 
 import database.Conexao;
-import model.Conta;
+
 import model.TipoTransacao;
 import model.Transacao; 
 
