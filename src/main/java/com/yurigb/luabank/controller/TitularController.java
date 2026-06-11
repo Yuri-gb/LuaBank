@@ -4,6 +4,7 @@ package com.yurigb.luabank.controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.yurigb.luabank.model.Conta;
+import com.yurigb.luabank.dto.ContaResponseDTO;
 import com.yurigb.luabank.dto.CriarContaDTO;
 import com.yurigb.luabank.service.ContaService;
 
@@ -18,7 +19,14 @@ public class TitularController {
     }
 
     @PostMapping("/conta/criar")
-    public Conta criar(@RequestBody CriarContaDTO dados) {
-        return contaService.criarConta(dados);
+    public ContaResponseDTO criar(@RequestBody CriarContaDTO dados) {
+
+        Conta conta = contaService.criarConta(dados);
+
+        return new ContaResponseDTO(
+                conta.getNumeroConta(),
+                conta.getEmail(),
+                conta.getSaldo()
+        );
     }
 }
