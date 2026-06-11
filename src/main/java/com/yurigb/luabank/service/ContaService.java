@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.yurigb.luabank.exception.CpfJaCadastradoException;
 import com.yurigb.luabank.exception.EmailJaCadastradoException;
 import com.yurigb.luabank.exception.TelefoneInvalidoException;
+import com.yurigb.luabank.exception.CpfInvalidoException;
 
 
 @Service
@@ -48,7 +49,7 @@ public class ContaService {
         String cpf = dados.getCpf().replaceAll("\\D", "");
 
         if (cpf.length() != 11) {
-            throw new CpfJaCadastradoException();
+            throw new CpfInvalidoException();
         }
 
         String telefone = dados.getTelefone().replaceAll("\\D", "");

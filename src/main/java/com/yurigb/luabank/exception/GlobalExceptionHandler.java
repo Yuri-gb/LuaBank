@@ -42,5 +42,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(ex.getMessage()));
+
+    }
+
+    @ExceptionHandler(CpfInvalidoException.class)
+    public ResponseEntity<ErrorResponse> tratarCpfInvalido(
+            CpfInvalidoException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getMessage()));
     }
 }
