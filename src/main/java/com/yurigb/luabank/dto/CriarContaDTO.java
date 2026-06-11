@@ -1,13 +1,28 @@
 package com.yurigb.luabank.dto;
 
-public class CriarContaDTO {
+import jakarta.validation.constraints.*;
 
+
+public class CriarContaDTO {
+    @NotBlank
     private String nome;
+
+    @NotBlank
     private String cpf;
+
+    @NotBlank
     private String telefone;
+    
+    @NotNull
+    @Min(18)
     private Integer idade;
 
+    @NotBlank
+    @Email
     private String email;
+
+    @Size(min = 6)
+    @NotBlank
     private String senha;
 
     public String getNome() {

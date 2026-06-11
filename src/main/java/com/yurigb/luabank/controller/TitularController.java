@@ -8,6 +8,8 @@ import com.yurigb.luabank.dto.ContaResponseDTO;
 import com.yurigb.luabank.dto.CriarContaDTO;
 import com.yurigb.luabank.service.ContaService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/titulares")
 public class TitularController {
@@ -19,7 +21,7 @@ public class TitularController {
     }
 
     @PostMapping("/conta/criar")
-    public ContaResponseDTO criar(@RequestBody CriarContaDTO dados) {
+    public ContaResponseDTO criar(@Valid@RequestBody CriarContaDTO dados) {
 
         Conta conta = contaService.criarConta(dados);
 
