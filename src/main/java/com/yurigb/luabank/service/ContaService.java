@@ -10,6 +10,7 @@ import com.yurigb.luabank.model.Titular;
 import com.yurigb.luabank.repository.TitularRepository;
 import com.yurigb.luabank.dto.CriarContaDTO;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 
@@ -17,6 +18,8 @@ import jakarta.transaction.Transactional;
 public class ContaService {
     private final ContaRepository contaRepository;
     private final TitularRepository titularRepository;
+    private final BCryptPasswordEncoder passwordEncoder =
+        new BCryptPasswordEncoder();
 
     public ContaService(ContaRepository contaRepository, TitularRepository titularRepository) {
         this.contaRepository = contaRepository;
@@ -54,7 +57,9 @@ public class ContaService {
         conta.setEmail(dados.getEmail());
         conta.setSaldo(BigDecimal.ZERO);
         conta.setNumeroConta(gerarNumeroConta());
-        conta.setSenhaHash(dados.getSenha()); // depois BCrypt
+        String senhaHash = passwordEncoder.encode(dados.getSenha());
+
+        conta.setSenhaHash(senhaHash);
 
         conta.setTitular(titularSalvo);
 
