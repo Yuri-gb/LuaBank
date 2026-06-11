@@ -11,7 +11,9 @@ import com.yurigb.luabank.repository.TitularRepository;
 import com.yurigb.luabank.dto.CriarContaDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+import com.yurigb.luabank.exception.CpfJaCadastradoException;
+import com.yurigb.luabank.exception.EmailJaCadastradoException;
+import com.yurigb.luabank.exception.TelefoneInvalidoException;
 
 
 @Service
@@ -46,21 +48,21 @@ public class ContaService {
         String cpf = dados.getCpf().replaceAll("\\D", "");
 
         if (cpf.length() != 11) {
-            throw new IllegalArgumentException("CPF inválido");
+            throw new CpfJaCadastradoException();
         }
 
         String telefone = dados.getTelefone().replaceAll("\\D", "");
 
         if (telefone.length() < 10 || telefone.length() > 11) {
-            throw new IllegalArgumentException("Telefone inválido");
+            throw new TelefoneInvalidoException();
         }
 
         if (titularRepository.findByCpf(cpf) != null) {
-            throw new IllegalArgumentException("CPF já cadastrado");
+            throw new CpfJaCadastradoException();
         }
 
         if (contaRepository.findByEmail(dados.getEmail()) != null) {
-            throw new IllegalArgumentException("Email já cadastrado");
+            throw new EmailJaCadastradoException();
         }
 
         Titular titular = new Titular();
