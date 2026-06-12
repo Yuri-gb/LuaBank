@@ -7,6 +7,7 @@ import com.yurigb.luabank.dto.ContaResponseDTO;
 import com.yurigb.luabank.dto.CriarContaDTO;
 import com.yurigb.luabank.dto.SacarDTO;
 import com.yurigb.luabank.dto.DepositarDTO;
+import com.yurigb.luabank.dto.TransferirDTO;
 
 import com.yurigb.luabank.service.ContaService;
 
@@ -44,6 +45,14 @@ public class ContaController {
     @PostMapping("/depositar")
     public void depositar(@Valid @RequestBody DepositarDTO dados) {
         contaService.depositar(dados.getNumeroConta(), dados.getValor());
+    }
+
+    @PostMapping("/transferir")
+    public void transferir(@Valid @RequestBody TransferirDTO dados) {
+        contaService.transferir(
+                dados.getContaOrigem(),
+                dados.getContaDestino(),
+                dados.getValor());
     }
 
 }

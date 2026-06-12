@@ -71,4 +71,13 @@ public class GlobalExceptionHandler {
                                 .status(HttpStatus.BAD_REQUEST)
                                 .body(new ErrorResponse(ex.getMessage()));
         }
+
+        @ExceptionHandler(TransferenciaInvalidaException.class)
+        public ResponseEntity<ErrorResponse> tratarTransferenciaInvalida(
+                        TransferenciaInvalidaException ex) {
+
+                return ResponseEntity
+                                .status(HttpStatus.BAD_REQUEST)
+                                .body(new ErrorResponse(ex.getMessage()));
+        }
 }

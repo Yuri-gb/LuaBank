@@ -11,12 +11,14 @@ import com.yurigb.luabank.repository.TitularRepository;
 import com.yurigb.luabank.dto.CriarContaDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.yurigb.luabank.exception.CpfJaCadastradoException;
 import com.yurigb.luabank.exception.EmailJaCadastradoException;
 import com.yurigb.luabank.exception.TelefoneInvalidoException;
 import com.yurigb.luabank.exception.CpfInvalidoException;
 import com.yurigb.luabank.exception.ContaNaoEncontradaException;
 import com.yurigb.luabank.exception.SaldoInsuficienteException;
+import com.yurigb.luabank.exception.TransferenciaInvalidaException;
 
 @Service
 public class ContaService {
@@ -103,6 +105,7 @@ public class ContaService {
         contaRepository.save(conta);
     }
 
+    @Transactional
     public void depositar(long numeroConta, BigDecimal valor) {
         Conta conta = contaRepository.findByNumeroConta(numeroConta);
 
@@ -118,4 +121,42 @@ public class ContaService {
         contaRepository.save(conta);
     }
 
+    @Transactional
+    public void transferir(
+            long numeroContaOrigem,
+            long numeroContaDestino,
+            BigDecimal valor) {
+
+        if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new TransferenciaInvalidaException(
+                    "O valor da transferência deve ser maior que zero");
+        }
+
+        if (numeroContaOrigem == numeroContaDestino) {
+            throw new TransferenciaInvalidaException(
+                    "Não é possível transferir para a mesma conta");
+        }
+
+        Conta contaOrigem = contaRepository.findByNumeroConta(numeroContaOrigem);
+
+        Conta contaDestino = contaRepository.findByNumeroConta(numeroContaDestino);
+
+        if (contaOrigem == null || contaDestino == null) {
+            throw new ContaNaoEncontradaException();
+        }
+
+        if (contaOrigem.getSaldo().compareTo(valor) < 0) {
+            throw new SaldoInsuficienteException(
+                    "Saldo insuficiente para realizar a transferência");
+        }
+
+        contaOrigem.setSaldo(
+                contaOrigem.getSaldo().subtract(valor));
+
+        contaDestino.setSaldo(
+                contaDestino.getSaldo().add(valor));
+
+        contaRepository.save(contaOrigem);
+        contaRepository.save(contaDestino);
+    }
 }
