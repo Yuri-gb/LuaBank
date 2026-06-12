@@ -21,7 +21,7 @@ public class TitularController {
     }
 
     @PostMapping("/conta/criar")
-    public ContaResponseDTO criar(@Valid@RequestBody CriarContaDTO dados) {
+    public ContaResponseDTO criar(@Valid @RequestBody CriarContaDTO dados) {
 
         Conta conta = contaService.criarConta(dados);
 

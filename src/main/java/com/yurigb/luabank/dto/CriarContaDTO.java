@@ -1,5 +1,6 @@
 package com.yurigb.luabank.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
 
@@ -19,6 +20,13 @@ public class CriarContaDTO {
 
     @NotBlank
     @Email
+    
+    @Schema( description = "Email utilizado para login",
+    example = "use@email.com")
+    @Pattern(
+    regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+    message = "Email inválido"
+)
     private String email;
 
     @Size(min = 6)
