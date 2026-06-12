@@ -3,34 +3,35 @@ package com.yurigb.luabank.service;
 import java.math.BigDecimal;
 import java.util.Random;
 
-import org.springframework.stereotype.*;
-import java.math.BigDecimal;
-import com.yurigb.luabank.repository.ContaRepository;
-import com.yurigb.luabank.model.Conta;
-import com.yurigb.luabank.model.Titular;
-import com.yurigb.luabank.repository.TitularRepository;
-import com.yurigb.luabank.dto.CriarContaDTO;
-import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
-
+import com.yurigb.luabank.dto.CriarContaDTO;
+import com.yurigb.luabank.exception.ContaNaoEncontradaException;
+import com.yurigb.luabank.exception.CpfInvalidoException;
 import com.yurigb.luabank.exception.CpfJaCadastradoException;
 import com.yurigb.luabank.exception.EmailJaCadastradoException;
-import com.yurigb.luabank.exception.TelefoneInvalidoException;
-import com.yurigb.luabank.exception.CpfInvalidoException;
-import com.yurigb.luabank.exception.ContaNaoEncontradaException;
 import com.yurigb.luabank.exception.SaldoInsuficienteException;
+import com.yurigb.luabank.exception.TelefoneInvalidoException;
 import com.yurigb.luabank.exception.TransferenciaInvalidaException;
+import com.yurigb.luabank.model.Conta;
+import com.yurigb.luabank.model.Titular;
+import com.yurigb.luabank.repository.ContaRepository;
+import com.yurigb.luabank.repository.TitularRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class ContaService {
     private final ContaRepository contaRepository;
     private final TitularRepository titularRepository;
+    private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public ContaService(ContaRepository contaRepository, TitularRepository titularRepository) {
+    public ContaService(ContaRepository contaRepository, TitularRepository titularRepository, JwtService jwtService) {
         this.contaRepository = contaRepository;
         this.titularRepository = titularRepository;
+        this.jwtService = jwtService;
     }
 
     private String gerarNumeroConta() {

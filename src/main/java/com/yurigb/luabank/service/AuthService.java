@@ -13,15 +13,23 @@ import com.yurigb.luabank.repository.ContaRepository;
 public class AuthService {
 
     private final ContaRepository contaRepository;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final JwtService jwtService;
 
-    public AuthService(ContaRepository contaRepository) {
+    private final BCryptPasswordEncoder passwordEncoder =
+            new BCryptPasswordEncoder();
+
+    public AuthService(
+            ContaRepository contaRepository,
+            JwtService jwtService) {
+
         this.contaRepository = contaRepository;
+        this.jwtService = jwtService;
     }
 
     public LoginResponseDTO login(LoginDTO dados) {
 
-        Conta conta = contaRepository.findByEmail(dados.getEmail());
+        Conta conta = contaRepository.findByEmail(
+                dados.getEmail());
 
         if (conta == null) {
             throw new CredenciaisInvalidasException();
@@ -35,7 +43,9 @@ public class AuthService {
             throw new CredenciaisInvalidasException();
         }
 
-        return new LoginResponseDTO(
-                "Login realizado com sucesso");
+        String token =
+                jwtService.gerarToken(conta.getEmail());
+
+        return new LoginResponseDTO(token);
     }
 }
