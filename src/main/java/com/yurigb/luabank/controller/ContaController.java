@@ -55,4 +55,9 @@ public class ContaController {
                 dados.getValor());
     }
 
+    @GetMapping("/{numeroConta}/saldo")
+    public String consultarSaldo(@PathVariable long numeroConta) {
+        return "Saldo: " + contaService.consultarSaldo(numeroConta);
+    }
+
 }

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 
 import org.springframework.stereotype.*;
+import java.math.BigDecimal;
 import com.yurigb.luabank.repository.ContaRepository;
 import com.yurigb.luabank.model.Conta;
 import com.yurigb.luabank.model.Titular;
@@ -11,6 +12,7 @@ import com.yurigb.luabank.repository.TitularRepository;
 import com.yurigb.luabank.dto.CriarContaDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import com.yurigb.luabank.exception.CpfJaCadastradoException;
 import com.yurigb.luabank.exception.EmailJaCadastradoException;
@@ -158,5 +160,15 @@ public class ContaService {
 
         contaRepository.save(contaOrigem);
         contaRepository.save(contaDestino);
+    }
+
+    public BigDecimal consultarSaldo(long numeroConta) {
+        Conta conta = contaRepository.findByNumeroConta(numeroConta);
+
+        if (conta == null) {
+            throw new ContaNaoEncontradaException();
+        }
+
+        return conta.getSaldo();
     }
 }
