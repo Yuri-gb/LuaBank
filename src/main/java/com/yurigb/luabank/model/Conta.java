@@ -13,14 +13,14 @@ public class Conta {
     private Long id;
 
     @Column(nullable = false)
-    private BigDecimal saldo = BigDecimal.ZERO; 
+    private BigDecimal saldo = BigDecimal.ZERO;
 
     @Column(nullable = false, unique = true)
     private String numeroConta;
     @Column(nullable = false, unique = true)
     private String email;
-    
-    @Column(nullable = false)   
+
+    @Column(nullable = false)
     private String senhaHash;
 
     @ManyToOne
@@ -38,7 +38,6 @@ public class Conta {
         this.senhaHash = senhaHash;
         this.titular = titular;
     }
-
 
     // ======== getters ========
 
@@ -63,8 +62,8 @@ public class Conta {
     }
 
     public String getEmail() {
-    return email;
-}
+        return email;
+    }
 
     public String getSenhaHash() {
         return senhaHash;
@@ -89,8 +88,8 @@ public class Conta {
     }
 
     public void setEmail(String email) {
-    this.email = email;
-}
+        this.email = email;
+    }
 
     public void setSenhaHash(String senhaHash) {
         this.senhaHash = senhaHash;

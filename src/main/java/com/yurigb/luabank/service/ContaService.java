@@ -16,37 +16,32 @@ import com.yurigb.luabank.exception.EmailJaCadastradoException;
 import com.yurigb.luabank.exception.TelefoneInvalidoException;
 import com.yurigb.luabank.exception.CpfInvalidoException;
 import com.yurigb.luabank.exception.ContaNaoEncontradaException;
-import com.yurigb.luabank.exception.CredenciaisInvalidasException;
 import com.yurigb.luabank.exception.SaldoInsuficienteException;
-
 
 @Service
 public class ContaService {
     private final ContaRepository contaRepository;
     private final TitularRepository titularRepository;
-    private final BCryptPasswordEncoder passwordEncoder =
-        new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public ContaService(ContaRepository contaRepository, TitularRepository titularRepository) {
         this.contaRepository = contaRepository;
         this.titularRepository = titularRepository;
     }
 
-
     private String gerarNumeroConta() {
 
-    String numeroConta;
+        String numeroConta;
 
-    do {
-        numeroConta = String.valueOf(
-                100000 + new Random().nextInt(900000)
-        );
-    } while (contaRepository.existsByNumeroConta(numeroConta));
+        do {
+            numeroConta = String.valueOf(
+                    100000 + new Random().nextInt(900000));
+        } while (contaRepository.existsByNumeroConta(numeroConta));
 
-    return numeroConta;
-}
+        return numeroConta;
+    }
 
-   @Transactional
+    @Transactional
     public Conta criarConta(CriarContaDTO dados) {
 
         String cpf = dados.getCpf().replaceAll("\\D", "");
@@ -97,7 +92,7 @@ public class ContaService {
         Conta conta = contaRepository.findByNumeroConta(numeroConta);
 
         if (conta == null) {
-            throw new ContaNaoEncontradaException(); 
+            throw new ContaNaoEncontradaException();
         }
 
         if (conta.getSaldo().compareTo(valor) < 0) {
@@ -107,5 +102,20 @@ public class ContaService {
         conta.setSaldo(conta.getSaldo().subtract(valor));
         contaRepository.save(conta);
     }
-}
 
+    public void depositar(long numeroConta, BigDecimal valor) {
+        Conta conta = contaRepository.findByNumeroConta(numeroConta);
+
+        if (conta == null) {
+            throw new ContaNaoEncontradaException();
+        }
+
+        if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new SaldoInsuficienteException("O valor do depósito deve ser maior que zero");
+        }
+
+        conta.setSaldo(conta.getSaldo().add(valor));
+        contaRepository.save(conta);
+    }
+
+}

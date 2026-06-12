@@ -1,4 +1,5 @@
 package com.yurigb.luabank.model;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class Titular {
     private List<Conta> contas = new ArrayList<>();
 
     public Titular() {
-}
+    }
 
     public Titular(String nome, int idade, String cpf, String telefone) {
         this.nome = nome;
@@ -45,11 +46,11 @@ public class Titular {
     }
 
     public void adicionarConta(Conta conta) {
-    contas.add(conta);
-    conta.setTitular(this);
-}
+        contas.add(conta);
+        conta.setTitular(this);
+    }
 
-// ======== getters ========
+    // ======== getters ========
     public Long getId() {
         return id;
     }
@@ -66,7 +67,6 @@ public class Titular {
         return cpf;
     }
 
-
     public String getTelefone() {
         return telefone;
     }
@@ -75,7 +75,7 @@ public class Titular {
         return contas;
     }
 
-// ======== setters ========
+    // ======== setters ========
 
     public void setId(Long id) {
         this.id = id;
