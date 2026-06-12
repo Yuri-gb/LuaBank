@@ -15,6 +15,9 @@ import com.yurigb.luabank.exception.CpfJaCadastradoException;
 import com.yurigb.luabank.exception.EmailJaCadastradoException;
 import com.yurigb.luabank.exception.TelefoneInvalidoException;
 import com.yurigb.luabank.exception.CpfInvalidoException;
+import com.yurigb.luabank.exception.ContaNaoEncontradaException;
+import com.yurigb.luabank.exception.CredenciaisInvalidasException;
+import com.yurigb.luabank.exception.SaldoInsuficienteException;
 
 
 @Service
@@ -87,6 +90,22 @@ public class ContaService {
         conta.setTitular(titularSalvo);
 
         return contaRepository.save(conta);
+    }
+
+    @Transactional
+    public void sacar(long numeroConta, BigDecimal valor) {
+        Conta conta = contaRepository.findByNumeroConta(numeroConta);
+
+        if (conta == null) {
+            throw new ContaNaoEncontradaException(); 
+        }
+
+        if (conta.getSaldo().compareTo(valor) < 0) {
+            throw new SaldoInsuficienteException("Saldo insuficiente para realizar o saque");
+        }
+
+        conta.setSaldo(conta.getSaldo().subtract(valor));
+        contaRepository.save(conta);
     }
 }
 
