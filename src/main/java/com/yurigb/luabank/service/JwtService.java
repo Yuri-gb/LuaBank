@@ -12,7 +12,7 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "luabank-super-secret-key-luabank-super-secret-key";
+    private static final String SECRET_KEY = "j7QmL9xT2Kp8VnR4cY6wB1uD5sF3gH8aN0zX2eR7tU9iO4pL6kM1qWvC0yJ3";
 
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
