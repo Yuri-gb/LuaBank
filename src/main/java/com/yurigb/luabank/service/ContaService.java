@@ -172,4 +172,16 @@ public class ContaService {
 
         return conta.getSaldo();
     }
+
+
+    public Conta obterContaPorEmail(String email) {
+        
+        Conta conta = contaRepository.findByEmail(email);
+
+        if (conta == null) {
+            throw new ContaNaoEncontradaException();
+        }
+
+        return conta;
+    }
 }
