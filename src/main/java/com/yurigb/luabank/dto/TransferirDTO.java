@@ -5,8 +5,6 @@ import jakarta.validation.constraints.*;
 
 public class TransferirDTO {
 
-    @NotNull(message = "Número da conta de origem é obrigatório")
-    private Long contaOrigem;
     @NotNull(message = "Número da conta de destino é obrigatório")
     private Long contaDestino;
     @NotNull(message = "Valor da transferência é obrigatório")
@@ -17,14 +15,6 @@ public class TransferirDTO {
     }
 
     // getters e setters
-
-    public Long getContaOrigem() {
-        return contaOrigem;
-    }
-
-    public void setContaOrigem(Long contaOrigem) {
-        this.contaOrigem = contaOrigem;
-    }
 
     public Long getContaDestino() {
         return contaDestino;

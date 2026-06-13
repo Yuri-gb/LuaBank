@@ -1,5 +1,6 @@
 package com.yurigb.luabank.service;
 
+import com.yurigb.luabank.controller.AuthController;
 import java.math.BigDecimal;
 import java.util.Random;
 
@@ -25,13 +26,11 @@ import jakarta.transaction.Transactional;
 public class ContaService {
     private final ContaRepository contaRepository;
     private final TitularRepository titularRepository;
-    private final JwtService jwtService;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public ContaService(ContaRepository contaRepository, TitularRepository titularRepository, JwtService jwtService) {
+    public ContaService(ContaRepository contaRepository, TitularRepository titularRepository) {
         this.contaRepository = contaRepository;
         this.titularRepository = titularRepository;
-        this.jwtService = jwtService;
     }
 
     private String gerarNumeroConta() {
@@ -93,12 +92,8 @@ public class ContaService {
     }
 
     @Transactional
-    public void sacar(long numeroConta, BigDecimal valor) {
-        Conta conta = contaRepository.findByNumeroConta(numeroConta);
-
-        if (conta == null) {
-            throw new ContaNaoEncontradaException();
-        }
+    public void sacar(String email, BigDecimal valor) {
+        Conta conta = obterContaPorEmail(email);
 
         if (conta.getSaldo().compareTo(valor) < 0) {
             throw new SaldoInsuficienteException("Saldo insuficiente para realizar o saque");
@@ -109,12 +104,9 @@ public class ContaService {
     }
 
     @Transactional
-    public void depositar(long numeroConta, BigDecimal valor) {
-        Conta conta = contaRepository.findByNumeroConta(numeroConta);
+    public void depositar(BigDecimal valor, String email) {
 
-        if (conta == null) {
-            throw new ContaNaoEncontradaException();
-        }
+        Conta conta = obterContaPorEmail(email);
 
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new SaldoInsuficienteException("O valor do depósito deve ser maior que zero");
@@ -126,9 +118,12 @@ public class ContaService {
 
     @Transactional
     public void transferir(
-            long numeroContaOrigem,
+            String email,
             long numeroContaDestino,
             BigDecimal valor) {
+
+        Conta conta = obterContaPorEmail(email);
+        Long numeroContaOrigem = Long.parseLong(conta.getNumeroConta());
 
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new TransferenciaInvalidaException(
@@ -163,19 +158,8 @@ public class ContaService {
         contaRepository.save(contaDestino);
     }
 
-    public BigDecimal consultarSaldo(long numeroConta) {
-        Conta conta = contaRepository.findByNumeroConta(numeroConta);
-
-        if (conta == null) {
-            throw new ContaNaoEncontradaException();
-        }
-
-        return conta.getSaldo();
-    }
-
-
     public Conta obterContaPorEmail(String email) {
-        
+
         Conta conta = contaRepository.findByEmail(email);
 
         if (conta == null) {
@@ -184,4 +168,12 @@ public class ContaService {
 
         return conta;
     }
+
+    public BigDecimal consultarSaldoPorEmail(String email) {
+
+        Conta conta = obterContaPorEmail(email);
+
+        return conta.getSaldo();
+    }
+
 }

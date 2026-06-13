@@ -1,5 +1,6 @@
 package com.yurigb.luabank.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.yurigb.luabank.model.Conta;
@@ -12,8 +13,6 @@ import com.yurigb.luabank.dto.TransferirDTO;
 import com.yurigb.luabank.service.ContaService;
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/contas")
@@ -38,26 +37,49 @@ public class ContaController {
 
     @PostMapping("/sacar")
     public void sacar(@Valid @RequestBody SacarDTO dados) {
-        contaService.sacar(dados.getNumeroConta(), dados.getValor());
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        contaService.sacar(email, dados.getValor());
 
     }
 
     @PostMapping("/depositar")
     public void depositar(@Valid @RequestBody DepositarDTO dados) {
-        contaService.depositar(dados.getNumeroConta(), dados.getValor());
+
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        contaService.depositar(dados.getValor(), email);
     }
 
     @PostMapping("/transferir")
     public void transferir(@Valid @RequestBody TransferirDTO dados) {
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
         contaService.transferir(
-                dados.getContaOrigem(),
+                email,
                 dados.getContaDestino(),
                 dados.getValor());
     }
 
-    @GetMapping("/{numeroConta}/saldo")
-    public String consultarSaldo(@PathVariable long numeroConta) {
-        return "Saldo: " + contaService.consultarSaldo(numeroConta);
+    @GetMapping("/saldo")
+    public String consultarSaldo() {
+
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return "Saldo: " +
+                contaService.consultarSaldoPorEmail(email);
     }
 
 }

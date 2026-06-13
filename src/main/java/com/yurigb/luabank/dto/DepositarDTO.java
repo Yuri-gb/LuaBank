@@ -1,20 +1,19 @@
 package com.yurigb.luabank.dto;
+
 import java.math.BigDecimal;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.*;
+
+
 public class DepositarDTO {
-    private long numeroConta;
+
+    @NotNull
+    @DecimalMin("0.01")
     private BigDecimal valor;
 
-    public DepositarDTO(long numeroConta, BigDecimal valor) {
-        this.numeroConta = numeroConta;
-        this.valor = valor;
-    }
 
     public DepositarDTO() {
-    }
-
-    public long getNumeroConta() {
-        return numeroConta;
     }
 
     public BigDecimal getValor() {
