@@ -1,6 +1,5 @@
 package com.yurigb.luabank.service;
 
-import com.yurigb.luabank.controller.AuthController;
 import java.math.BigDecimal;
 import java.util.Random;
 
@@ -16,6 +15,7 @@ import com.yurigb.luabank.exception.SaldoInsuficienteException;
 import com.yurigb.luabank.exception.TelefoneInvalidoException;
 import com.yurigb.luabank.exception.TransferenciaInvalidaException;
 import com.yurigb.luabank.model.Conta;
+import com.yurigb.luabank.model.TipoOperacao;
 import com.yurigb.luabank.model.Titular;
 import com.yurigb.luabank.repository.ContaRepository;
 import com.yurigb.luabank.repository.TitularRepository;
@@ -24,13 +24,17 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class ContaService {
+    private final OperacaoService operacaoService;
     private final ContaRepository contaRepository;
     private final TitularRepository titularRepository;
+
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public ContaService(ContaRepository contaRepository, TitularRepository titularRepository) {
+    public ContaService(ContaRepository contaRepository, TitularRepository titularRepository,
+            OperacaoService operacaoService) {
         this.contaRepository = contaRepository;
         this.titularRepository = titularRepository;
+        this.operacaoService = operacaoService;
     }
 
     private String gerarNumeroConta() {
@@ -101,6 +105,7 @@ public class ContaService {
 
         conta.setSaldo(conta.getSaldo().subtract(valor));
         contaRepository.save(conta);
+        operacaoService.gerarOperacao(valor, TipoOperacao.SAQUE, conta);
     }
 
     @Transactional
@@ -113,6 +118,8 @@ public class ContaService {
         }
 
         conta.setSaldo(conta.getSaldo().add(valor));
+        operacaoService.gerarOperacao(valor, TipoOperacao.DEPOSITO, conta);
+
         contaRepository.save(conta);
     }
 
@@ -154,6 +161,8 @@ public class ContaService {
         contaDestino.setSaldo(
                 contaDestino.getSaldo().add(valor));
 
+        operacaoService.gerarOperacao(valor, TipoOperacao.TRANSFERENCIA_ENVIADA, contaOrigem);
+        operacaoService.gerarOperacao(valor, TipoOperacao.TRANSFERENCIA_RECEBIDA, contaDestino);
         contaRepository.save(contaOrigem);
         contaRepository.save(contaDestino);
     }
