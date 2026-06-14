@@ -1,7 +1,7 @@
 package com.yurigb.luabank.service;
 
 import java.math.BigDecimal;
-import java.util.Random;
+import java.util.*;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,12 @@ import com.yurigb.luabank.exception.SaldoInsuficienteException;
 import com.yurigb.luabank.exception.TelefoneInvalidoException;
 import com.yurigb.luabank.exception.TransferenciaInvalidaException;
 import com.yurigb.luabank.model.Conta;
+import com.yurigb.luabank.model.Operacao;
 import com.yurigb.luabank.model.TipoOperacao;
 import com.yurigb.luabank.model.Titular;
 import com.yurigb.luabank.repository.ContaRepository;
 import com.yurigb.luabank.repository.TitularRepository;
+import com.yurigb.luabank.repository.OperacaoRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -27,14 +29,17 @@ public class ContaService {
     private final OperacaoService operacaoService;
     private final ContaRepository contaRepository;
     private final TitularRepository titularRepository;
+    private final OperacaoRepository operacaoRepository;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public ContaService(ContaRepository contaRepository, TitularRepository titularRepository,
-            OperacaoService operacaoService) {
+            OperacaoService operacaoService, OperacaoRepository operacaoRepository) {
         this.contaRepository = contaRepository;
         this.titularRepository = titularRepository;
         this.operacaoService = operacaoService;
+        this.operacaoRepository = operacaoRepository;
+
     }
 
     private String gerarNumeroConta() {
@@ -137,7 +142,7 @@ public class ContaService {
                     "O valor da transferência deve ser maior que zero");
         }
 
-        if (numeroContaOrigem == numeroContaDestino) {
+        if (numeroContaOrigem.equals(numeroContaDestino)) {
             throw new TransferenciaInvalidaException(
                     "Não é possível transferir para a mesma conta");
         }
@@ -161,8 +166,16 @@ public class ContaService {
         contaDestino.setSaldo(
                 contaDestino.getSaldo().add(valor));
 
-        operacaoService.gerarOperacao(valor, TipoOperacao.TRANSFERENCIA_ENVIADA, contaOrigem);
-        operacaoService.gerarOperacao(valor, TipoOperacao.TRANSFERENCIA_RECEBIDA, contaDestino);
+        operacaoService.gerarTransferenciaEnviada(
+                valor,
+                contaOrigem,
+                contaDestino);
+
+        operacaoService.gerarTransferenciaRecebida(
+                valor,
+                contaOrigem,
+                contaDestino);
+
         contaRepository.save(contaOrigem);
         contaRepository.save(contaDestino);
     }

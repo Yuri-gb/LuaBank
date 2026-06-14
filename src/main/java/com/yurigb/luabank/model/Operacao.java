@@ -30,48 +30,98 @@ public class Operacao {
     @Column(nullable = false)
     private LocalDateTime dataHora;
 
+    private String nomeRemetente;
+
+    private String numeroContaOrigem;
+
+    private String nomeDestinatario;
+
+    private String numeroContaDestino;
+
     @ManyToOne
     @JoinColumn(name = "conta_id", nullable = false)
     private Conta conta;
 
-    public Operacao(BigDecimal valor, LocalDateTime dataHora, TipoOperacao tipoOperacao, Conta numeroConta) {
-        this.dataHora = dataHora;
-        this.tipo = tipoOperacao;
-        this.valor = valor;
-        this.conta = numeroConta;
-
-
+    public Operacao() {
     }
 
-    public Operacao(){
+    public Operacao(
+            BigDecimal valor,
+            LocalDateTime dataHora,
+            TipoOperacao tipo,
+            Conta conta) {
 
+        this.valor = valor;
+        this.dataHora = dataHora;
+        this.tipo = tipo;
+        this.conta = conta;
     }
 
     public Long getId() {
         return id;
     }
 
+    public TipoOperacao getTipo() {
+        return tipo;
+    }
+
     public BigDecimal getValor() {
         return valor;
     }
 
-    public LocalDateTime getdataHora() {
+    public LocalDateTime getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
+    public Conta getConta() {
+        return conta;
     }
 
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
+    public String getNomeRemetente() {
+        return nomeRemetente;
+    }
+
+    public String getNumeroContaOrigem() {
+        return numeroContaOrigem;
+    }
+
+    public String getNomeDestinatario() {
+        return nomeDestinatario;
+    }
+
+    public String getNumeroContaDestino() {
+        return numeroContaDestino;
     }
 
     public void setTipo(TipoOperacao tipo) {
         this.tipo = tipo;
     }
 
-        public void setConta(Conta  conta) {
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public void setDataHora(LocalDateTime dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public void setConta(Conta conta) {
         this.conta = conta;
+    }
+
+    public void setNomeRemetente(String nomeRemetente) {
+        this.nomeRemetente = nomeRemetente;
+    }
+
+    public void setNumeroContaOrigem(String numeroContaOrigem) {
+        this.numeroContaOrigem = numeroContaOrigem;
+    }
+
+    public void setNomeDestinatario(String nomeDestinatario) {
+        this.nomeDestinatario = nomeDestinatario;
+    }
+
+    public void setNumeroContaDestino(String numeroContaDestino) {
+        this.numeroContaDestino = numeroContaDestino;
     }
 }
