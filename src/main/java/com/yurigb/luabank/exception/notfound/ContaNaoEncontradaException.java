@@ -1,4 +1,4 @@
-package com.yurigb.luabank.exception;
+package com.yurigb.luabank.exception.notfound;
 
 public class ContaNaoEncontradaException extends RuntimeException {
 

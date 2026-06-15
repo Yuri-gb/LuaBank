@@ -1,4 +1,4 @@
-package com.yurigb.luabank.exception;
+package com.yurigb.luabank.exception.handler;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.yurigb.luabank.exception;
+package com.yurigb.luabank.exception.badrequest;
 
 public class CpfInvalidoException extends RuntimeException {
 

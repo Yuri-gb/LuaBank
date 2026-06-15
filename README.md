@@ -1,18 +1,19 @@
-# Projeto Branco
+# LuaBank
 
-Sistema bancário desenvolvido em Java para estudos de Programação Orientada a Objetos, persistência de dados, arquitetura de software e boas práticas de desenvolvimento.
+API bancária desenvolvida em Java com Spring Boot para estudos de arquitetura de software, APIs REST, autenticação JWT, persistência de dados e boas práticas de desenvolvimento backend.
 
 ## 🚀 Versão Atual
 
-**v1.0 - Sistema Bancário Funcional**
+**v2.0 - API Bancária REST**
 
 ## Funcionalidades
 
 ### Autenticação
 
 * Cadastro de usuários
-* Login
+* Login com JWT
 * Validação de credenciais
+* Proteção de rotas autenticadas
 * Verificação de email duplicado
 * Verificação de CPF duplicado
 
@@ -21,28 +22,36 @@ Sistema bancário desenvolvido em Java para estudos de Programação Orientada a
 * Criação automática de conta
 * Geração automática do número da conta
 * Consulta de saldo
+* Consulta de perfil
 
 ### Operações Bancárias
 
 * Depósito
 * Saque
-
-### Transações
-
-* Registro de movimentações
-* Histórico de transações
+* Transferência entre contas
 
 ### Extrato
 
-* Consulta de extrato
+* Registro automático de movimentações
+* Histórico de operações
 * Ordenação por data
-* Exibição do histórico completo
+* Identificação de remetente e destinatário em transferências
+
+### Tratamento de Erros
+
+* Respostas padronizadas
+* Exceções customizadas
+* Códigos HTTP apropriados
 
 ## Tecnologias Utilizadas
 
-* Java
-* SQLite
-* JDBC
+* Java 21
+* Spring Boot
+* Spring Security
+* JWT
+* Spring Data JPA
+* Hibernate
+* Maven
 * Git
 * GitHub
 
@@ -51,91 +60,128 @@ Sistema bancário desenvolvido em Java para estudos de Programação Orientada a
 O projeto está organizado em camadas:
 
 ```text
-src/
-├── app/
-├── auth/
-├── dao/
-├── database/
-├── model/
-├── service/
-└── transacao/
+src/main/java/com/yurigb/luabank
+├── config
+├── controller
+├── dto
+│   ├── request
+│   └── response
+├── exception
+│   ├── badrequest
+│   ├── conflict
+│   ├── handler
+│   ├── notfound
+│   └── unauthorized
+├── model
+├── repository
+├── security
+└── service
 ```
 
 ### Responsabilidades
 
-* **Model** → Entidades do sistema
-* **DAO** → Persistência de dados
-* **Service** → Regras de negócio
-* **Database** → Configuração e inicialização do banco
+* Controller → Recebe e responde requisições HTTP
+* Service → Regras de negócio
+* Repository → Persistência de dados
+* DTO → Comunicação da API
+* Model → Entidades do sistema
+* Security → Autenticação e autorização
+* Exception → Tratamento global de erros
 
-## Execução do Projeto
+## Endpoints Principais
 
-O projeto deve ser executado pela pasta raiz `BANCO/`.
+### Autenticação
 
-Isso é necessário para garantir o funcionamento correto dos caminhos relativos utilizados pelo SQLite e evitar problemas de duplicidade do banco de dados.
-
-Estrutura esperada:
-
-```text
-BANCO/
-├── src/
-├── data/
-├── docs/
-├── lib/
+```http
+POST /auth/login
 ```
 
-O banco de dados será criado automaticamente em:
+### Conta
 
-```text
-data/banco.db
+```http
+POST /contas/criar
+GET  /contas/perfil
+GET  /contas/saldo
+```
+
+### Operações
+
+```http
+POST /contas/depositar
+POST /contas/sacar
+POST /contas/transferir
+GET  /contas/extrato
 ```
 
 ## Roadmap
 
-### V1 ✅
+### v2.0 ✅
 
-* Cadastro
-* Login
-* Conta Bancária
+* Cadastro de usuários
+* Login com JWT
+* Consulta de saldo
+* Consulta de perfil
 * Depósito
 * Saque
-* Histórico de Transações
-* Extrato
-
-### V2 🚧
-
-* Spring Boot
-* API REST
-* PostgreSQL ou MySQL
-* JWT
 * Transferência entre contas
+* Extrato bancário
+* Histórico de operações
+* Tratamento global de exceções
 
-### V3 📋
+### v3.0 🚧
 
-* Interface Web
-* Dashboard
-* Integração com API REST
+#### Backend
+
+* Pix
+* Paginação de extrato
+* Filtros de operações
+* Melhorias de segurança
+* Documentação completa da API
+
+#### Frontend
+
+* Dashboard Web
+* Consulta de saldo
+* Extrato visual
+* Transferências
+* Perfil do usuário
+
+#### Deploy
+
+* Backend em produção
+* Banco de dados em nuvem
+* Ambiente de testes
+
+### v4.0 📋
+
+* Cartão de crédito
+* Limite de crédito
+* Fatura
+* Aplicativo Mobile
+* QR Code
+* Novas funcionalidades financeiras
 
 ## Objetivo
 
-Projeto criado para praticar conceitos de desenvolvimento backend e evolução contínua em Java.
+Projeto criado para praticar desenvolvimento backend moderno utilizando Java e Spring Boot, simulando funcionalidades presentes em sistemas bancários reais.
 
-Além do aprendizado técnico, o projeto também tem como objetivo desenvolver conhecimentos em:
+Além do aprendizado técnico, o projeto tem como objetivo aprofundar conhecimentos em:
 
 * Programação Orientada a Objetos
-* Arquitetura de Software
 * Arquitetura em Camadas
-* SQL
-* JDBC
-* Persistência de Dados
-* Documentação
-* Git e GitHub
 * APIs REST
 * Spring Boot
-* Desenvolvimento Full Stack
+* Spring Security
+* JWT
+* JPA/Hibernate
+* Banco de Dados
+* Documentação
+* Git e GitHub
+
+O projeto é desenvolvido de forma incremental, com foco em evolução contínua, qualidade de código e aplicação de boas práticas utilizadas em sistemas financeiros reais.
 
 ## Autor
 
-Yuri Gabriel
+**Yuri Gabriel**
 
-Estudante de Desenvolvimento de Sistemas e entusiasta de desenvolvimento backend.
+Estudante de programação com foco em desenvolvimento backend e arquitetura de software.

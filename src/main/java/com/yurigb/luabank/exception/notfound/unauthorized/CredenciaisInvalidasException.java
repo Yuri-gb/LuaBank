@@ -1,4 +1,4 @@
-package com.yurigb.luabank.exception;
+package com.yurigb.luabank.exception.notfound.unauthorized;
 
 public class CredenciaisInvalidasException extends RuntimeException {
 

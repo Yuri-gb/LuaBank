@@ -3,9 +3,9 @@ package com.yurigb.luabank.service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.yurigb.luabank.dto.LoginDTO;
-import com.yurigb.luabank.dto.LoginResponseDTO;
-import com.yurigb.luabank.exception.CredenciaisInvalidasException;
+import com.yurigb.luabank.dto.request.LoginRequestDTO;
+import com.yurigb.luabank.dto.response.LoginResponseDTO;
+import com.yurigb.luabank.exception.notfound.unauthorized.CredenciaisInvalidasException;
 import com.yurigb.luabank.model.Conta;
 import com.yurigb.luabank.repository.ContaRepository;
 
@@ -26,17 +26,17 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public LoginResponseDTO login(LoginDTO dados) {
+    public LoginResponseDTO login(LoginRequestDTO dados) {
 
         Conta conta = contaRepository.findByEmail(
-                dados.getEmail());
+                dados.email());
 
         if (conta == null) {
             throw new CredenciaisInvalidasException();
         }
 
         boolean senhaValida = passwordEncoder.matches(
-                dados.getSenha(),
+                dados.senha(),
                 conta.getSenhaHash());
 
         if (!senhaValida) {

@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.yurigb.luabank.dto.LoginDTO;
-import com.yurigb.luabank.dto.LoginResponseDTO;
+import com.yurigb.luabank.dto.request.LoginRequestDTO;
+import com.yurigb.luabank.dto.response.LoginResponseDTO;
 import com.yurigb.luabank.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -23,7 +23,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public LoginResponseDTO login(
-            @Valid @RequestBody LoginDTO dados) {
+            @Valid @RequestBody LoginRequestDTO dados) {
 
         return authService.login(dados);
     }

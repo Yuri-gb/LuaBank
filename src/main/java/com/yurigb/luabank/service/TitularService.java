@@ -4,9 +4,6 @@ import org.springframework.stereotype.*;
 import com.yurigb.luabank.repository.TitularRepository;
 import com.yurigb.luabank.model.Titular;
 
-
-
-
 @Service
 public class TitularService {
     private final TitularRepository titularRepository;
@@ -15,10 +12,8 @@ public class TitularService {
         this.titularRepository = titularRepository;
     }
 
-
-    
     public Titular criarTitular(Titular titular) {
-        
+
         return titularRepository.save(titular);
     }
 

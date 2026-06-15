@@ -1,4 +1,4 @@
-package com.yurigb.luabank.dto;
+package com.yurigb.luabank.dto.response;
 
 public record LoginResponseDTO(
         String token
