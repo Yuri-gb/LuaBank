@@ -1,8 +1,17 @@
 package com.yurigb.luabank.model;
 
 import java.math.BigDecimal;
+import java.util.*;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "contas")
@@ -27,6 +36,9 @@ public class Conta {
     @JoinColumn(name = "titular_id", nullable = false)
 
     private Titular titular;
+
+    @OneToMany(mappedBy = "conta")
+    private List<ChavePix> chavesPix = new ArrayList<>();
 
     public Conta() {
     }
@@ -69,6 +81,10 @@ public class Conta {
         return senhaHash;
     }
 
+    public List<ChavePix> getChavesPix() {
+        return chavesPix;
+    }
+
     // ======== setters ========
 
     public void setSaldo(BigDecimal saldo) {
@@ -93,5 +109,9 @@ public class Conta {
 
     public void setSenhaHash(String senhaHash) {
         this.senhaHash = senhaHash;
+    }
+
+    public void setChavesPix(List<ChavePix> chavesPix) {
+        this.chavesPix = chavesPix;
     }
 }

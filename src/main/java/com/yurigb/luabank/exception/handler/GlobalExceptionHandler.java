@@ -9,10 +9,12 @@ import com.yurigb.luabank.exception.badrequest.CpfInvalidoException;
 import com.yurigb.luabank.exception.badrequest.SaldoInsuficienteException;
 import com.yurigb.luabank.exception.badrequest.TelefoneInvalidoException;
 import com.yurigb.luabank.exception.badrequest.TransferenciaInvalidaException;
+import com.yurigb.luabank.exception.conflict.ChavePixJaCadastradaException;
 import com.yurigb.luabank.exception.conflict.CpfJaCadastradoException;
 import com.yurigb.luabank.exception.conflict.EmailJaCadastradoException;
+import com.yurigb.luabank.exception.notfound.ChavePixNaoEncontradaException;
 import com.yurigb.luabank.exception.notfound.ContaNaoEncontradaException;
-import com.yurigb.luabank.exception.notfound.unauthorized.CredenciaisInvalidasException;
+import com.yurigb.luabank.exception.unauthorized.CredenciaisInvalidasException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,7 +30,8 @@ public class GlobalExceptionHandler {
 
         @ExceptionHandler({
                         CpfJaCadastradoException.class,
-                        EmailJaCadastradoException.class
+                        EmailJaCadastradoException.class,
+                        ChavePixJaCadastradaException.class
         })
         public ResponseEntity<ErrorResponse> tratarConflitos(
                         RuntimeException ex) {
@@ -36,7 +39,10 @@ public class GlobalExceptionHandler {
                 return erro(HttpStatus.CONFLICT, ex);
         }
 
-        @ExceptionHandler(ContaNaoEncontradaException.class)
+        @ExceptionHandler({
+                        ContaNaoEncontradaException.class,
+                        ChavePixNaoEncontradaException.class
+        })
         public ResponseEntity<ErrorResponse> tratarContaNaoEncontrada(
                         ContaNaoEncontradaException ex) {
 

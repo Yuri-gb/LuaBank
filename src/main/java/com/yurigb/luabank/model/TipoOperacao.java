@@ -4,7 +4,7 @@ public enum TipoOperacao {
 
     DEPOSITO,
     SAQUE,
-    TRANSFERENCIA_ENVIADA,
-    TRANSFERENCIA_RECEBIDA
+    PIX_ENVIADO,
+    PIX_RECEBIDO
 
 }

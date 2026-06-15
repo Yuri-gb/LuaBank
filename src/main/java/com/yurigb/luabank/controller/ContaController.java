@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.yurigb.luabank.dto.request.CriarContaDTO;
 import com.yurigb.luabank.dto.request.DepositarDTO;
 import com.yurigb.luabank.dto.request.SacarDTO;
-import com.yurigb.luabank.dto.request.TransferirDTO;
+
 import com.yurigb.luabank.dto.response.ContaResponseDTO;
 import com.yurigb.luabank.dto.response.ExtratoResponseDTO;
 import com.yurigb.luabank.dto.response.PerfilResponseDTO;
@@ -108,14 +108,5 @@ public class ContaController {
                                 dados.valor());
         }
 
-        @PostMapping("/transferir")
-        public void transferir(
-                        @Valid @RequestBody TransferirDTO dados) {
-
-                contaService.transferir(
-                                obterEmailLogado(),
-                                dados.contaDestino(),
-                                dados.valor());
-        }
 
 }

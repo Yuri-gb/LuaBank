@@ -14,6 +14,7 @@ import com.yurigb.luabank.exception.badrequest.TransferenciaInvalidaException;
 import com.yurigb.luabank.exception.conflict.CpfJaCadastradoException;
 import com.yurigb.luabank.exception.conflict.EmailJaCadastradoException;
 import com.yurigb.luabank.exception.notfound.ContaNaoEncontradaException;
+import com.yurigb.luabank.model.ChavePix;
 import com.yurigb.luabank.model.Conta;
 import com.yurigb.luabank.model.TipoOperacao;
 import com.yurigb.luabank.model.Titular;
@@ -28,17 +29,20 @@ public class ContaService {
     private final ContaRepository contaRepository;
     private final TitularRepository titularRepository;
     private final OperacaoService operacaoService;
+    private final ChavePixService chavePixService;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public ContaService(
             ContaRepository contaRepository,
             TitularRepository titularRepository,
-            OperacaoService operacaoService) {
+            OperacaoService operacaoService,
+            ChavePixService chavePixService) {
 
         this.contaRepository = contaRepository;
         this.titularRepository = titularRepository;
         this.operacaoService = operacaoService;
+        this.chavePixService = chavePixService;
     }
 
     private String gerarNumeroConta() {
@@ -147,34 +151,35 @@ public class ContaService {
     }
 
     @Transactional
-    public void transferir(
+    public void enviarPix(
             String email,
-            long numeroContaDestino,
+            String chavePix,
             BigDecimal valor) {
 
         Conta contaOrigem = obterContaPorEmail(email);
 
-        Long numeroContaOrigem = Long.parseLong(contaOrigem.getNumeroConta());
+        ChavePix chave = chavePixService.buscarPorChave(chavePix);
+
+        Conta contaDestino = chave.getConta();
+
+        if (contaOrigem.getId()
+                .equals(contaDestino.getId())) {
+
+            throw new TransferenciaInvalidaException(
+                    "Não é possível enviar Pix para si mesmo");
+        }
 
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+
             throw new TransferenciaInvalidaException(
-                    "O valor da transferência deve ser maior que zero");
+                    "O valor deve ser maior que zero");
         }
 
-        if (numeroContaOrigem.equals(numeroContaDestino)) {
-            throw new TransferenciaInvalidaException(
-                    "Não é possível transferir para a mesma conta");
-        }
+        if (contaOrigem.getSaldo()
+                .compareTo(valor) < 0) {
 
-        Conta contaDestino = contaRepository.findByNumeroConta(numeroContaDestino);
-
-        if (contaDestino == null) {
-            throw new ContaNaoEncontradaException();
-        }
-
-        if (contaOrigem.getSaldo().compareTo(valor) < 0) {
             throw new SaldoInsuficienteException(
-                    "Saldo insuficiente para realizar a transferência");
+                    "Saldo insuficiente");
         }
 
         contaOrigem.setSaldo(
@@ -195,10 +200,8 @@ public class ContaService {
 
         contaRepository.save(contaOrigem);
         contaRepository.save(contaDestino);
-
     }
 
-    
     public Conta obterContaPorEmail(String email) {
 
         Conta conta = contaRepository.findByEmail(email);

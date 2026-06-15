@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.yurigb.luabank.dto.request.LoginRequestDTO;
 import com.yurigb.luabank.dto.response.LoginResponseDTO;
-import com.yurigb.luabank.exception.notfound.unauthorized.CredenciaisInvalidasException;
+import com.yurigb.luabank.exception.unauthorized.CredenciaisInvalidasException;
 import com.yurigb.luabank.model.Conta;
 import com.yurigb.luabank.repository.ContaRepository;
 

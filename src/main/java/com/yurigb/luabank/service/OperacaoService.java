@@ -49,7 +49,7 @@ public class OperacaoService {
         Operacao operacao = new Operacao();
 
         operacao.setTipo(
-                TipoOperacao.TRANSFERENCIA_ENVIADA);
+                TipoOperacao.PIX_ENVIADO);
 
         operacao.setValor(valor);
         operacao.setConta(contaOrigem);
@@ -72,7 +72,7 @@ public class OperacaoService {
         Operacao operacao = new Operacao();
 
         operacao.setTipo(
-                TipoOperacao.TRANSFERENCIA_RECEBIDA);
+                TipoOperacao.PIX_RECEBIDO);
 
         operacao.setValor(valor);
         operacao.setConta(contaDestino);
