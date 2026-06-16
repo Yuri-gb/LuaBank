@@ -2,12 +2,14 @@ package com.yurigb.luabank.exception.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.yurigb.luabank.exception.badrequest.CpfInvalidoException;
 import com.yurigb.luabank.exception.badrequest.SaldoInsuficienteException;
 import com.yurigb.luabank.exception.badrequest.TelefoneInvalidoException;
+import com.yurigb.luabank.exception.badrequest.TipoChavePixInvalidoException;
 import com.yurigb.luabank.exception.badrequest.TransferenciaInvalidaException;
 import com.yurigb.luabank.exception.conflict.ChavePixJaCadastradaException;
 import com.yurigb.luabank.exception.conflict.CpfJaCadastradoException;
@@ -43,8 +45,8 @@ public class GlobalExceptionHandler {
                         ContaNaoEncontradaException.class,
                         ChavePixNaoEncontradaException.class
         })
-        public ResponseEntity<ErrorResponse> tratarContaNaoEncontrada(
-                        ContaNaoEncontradaException ex) {
+        public ResponseEntity<ErrorResponse> tratarNaoEncontrado(
+                        RuntimeException ex) {
 
                 return erro(HttpStatus.NOT_FOUND, ex);
         }
@@ -57,15 +59,34 @@ public class GlobalExceptionHandler {
         }
 
         @ExceptionHandler({
-                        CpfInvalidoException.class,
                         TelefoneInvalidoException.class,
+                        CpfInvalidoException.class,
                         SaldoInsuficienteException.class,
-                        TransferenciaInvalidaException.class
+                        TransferenciaInvalidaException.class,
+                        TipoChavePixInvalidoException.class
         })
+
         public ResponseEntity<ErrorResponse> tratarBadRequest(
                         RuntimeException ex) {
 
                 return erro(HttpStatus.BAD_REQUEST, ex);
         }
 
+        @ExceptionHandler(HttpMessageNotReadableException.class)
+        public ResponseEntity<ErrorResponse> tratarJsonInvalido(
+                        HttpMessageNotReadableException ex) {
+
+                if (ex.getMessage().contains("Tipo de chave Pix inválido")) {
+
+                        return ResponseEntity
+                                        .badRequest()
+                                        .body(new ErrorResponse(
+                                                        "Tipo de chave Pix inválido"));
+                }
+
+                return ResponseEntity
+                                .badRequest()
+                                .body(new ErrorResponse(
+                                                "Dados inválidos"));
+        }
 }
