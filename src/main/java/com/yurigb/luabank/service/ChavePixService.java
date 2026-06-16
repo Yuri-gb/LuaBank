@@ -1,6 +1,7 @@
 package com.yurigb.luabank.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import com.yurigb.luabank.exception.notfound.ChavePixNaoEncontradaException;
 import com.yurigb.luabank.exception.notfound.ContaNaoEncontradaException;
 import com.yurigb.luabank.model.ChavePix;
 import com.yurigb.luabank.model.Conta;
+import com.yurigb.luabank.model.TipoChavePix;
 import com.yurigb.luabank.repository.ChavePixRepository;
 import com.yurigb.luabank.repository.ContaRepository;
 
@@ -38,14 +40,43 @@ public class ChavePixService {
             throw new ContaNaoEncontradaException();
         }
 
-        if (chavePixRepository.existsByValor(dados.valor())) {
+        if (dados.tipo() != TipoChavePix.ALEATORIA
+                && chavePixRepository.existsByContaAndTipo(
+                        conta,
+                        dados.tipo())) {
+
+            throw new ChavePixJaCadastradaException();
+        }
+
+        String valor;
+
+        switch (dados.tipo()) {
+
+            case CPF ->
+                valor = conta.getTitular().getCpf();
+
+            case EMAIL ->
+                valor = conta.getEmail();
+
+            case TELEFONE ->
+                valor = conta.getTitular().getTelefone();
+
+            case ALEATORIA ->
+                valor = UUID.randomUUID().toString();
+
+            default ->
+                throw new IllegalArgumentException(
+                        "Tipo de chave inválido");
+        }
+
+        if (chavePixRepository.existsByValor(valor)) {
             throw new ChavePixJaCadastradaException();
         }
 
         ChavePix chavePix = new ChavePix();
 
         chavePix.setTipo(dados.tipo());
-        chavePix.setValor(dados.valor());
+        chavePix.setValor(valor);
         chavePix.setConta(conta);
 
         chavePixRepository.save(chavePix);
