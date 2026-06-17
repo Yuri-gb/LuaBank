@@ -1,17 +1,24 @@
 package com.yurigb.luabank.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.data.domain.Sort;
 
 import com.yurigb.luabank.dto.request.CriarContaDTO;
 import com.yurigb.luabank.dto.request.DepositarDTO;
 import com.yurigb.luabank.dto.request.SacarDTO;
-
 import com.yurigb.luabank.dto.response.ContaResponseDTO;
 import com.yurigb.luabank.dto.response.ExtratoResponseDTO;
 import com.yurigb.luabank.dto.response.PerfilResponseDTO;
+import com.yurigb.luabank.dto.request.AtualizarContaDTO;
 import com.yurigb.luabank.model.Conta;
 import com.yurigb.luabank.service.ContaService;
 import com.yurigb.luabank.service.OperacaoService;
@@ -52,6 +59,12 @@ public class ContaController {
                                 conta.getSaldo());
         }
 
+        @PutMapping("/atualizar")
+        public void atualizar(@RequestBody AtualizarContaDTO dados) {
+
+                contaService.atualizarConta(dados, obterEmailLogado());
+        }
+
         @GetMapping("/perfil")
         public PerfilResponseDTO perfil() {
 
@@ -61,6 +74,7 @@ public class ContaController {
                 return new PerfilResponseDTO(
                                 conta.getTitular().getNome(),
                                 conta.getEmail(),
+                                conta.getTitular().getTelefone(),
                                 conta.getNumeroConta(),
                                 conta.getSaldo());
         }
@@ -74,11 +88,13 @@ public class ContaController {
         }
 
         @GetMapping("/extrato")
-        public List<ExtratoResponseDTO> consultarExtrato() {
+        public Page<ExtratoResponseDTO> consultarExtrato(
+                        @PageableDefault(size = 10, sort = "dataHora", direction = Sort.Direction.DESC) Pageable pageable) {
 
-                return operacaoService.consultarExtrato(
-                                obterEmailLogado())
-                                .stream()
+                return operacaoService
+                                .consultarExtrato(
+                                                obterEmailLogado(),
+                                                pageable)
                                 .map(op -> new ExtratoResponseDTO(
                                                 op.getTipo(),
                                                 op.getValor(),
@@ -86,8 +102,7 @@ public class ContaController {
                                                 op.getNomeRemetente(),
                                                 op.getNomeDestinatario(),
                                                 op.getNumeroContaOrigem(),
-                                                op.getNumeroContaDestino()))
-                                .toList();
+                                                op.getNumeroContaDestino()));
         }
 
         @PostMapping("/depositar")
@@ -107,6 +122,5 @@ public class ContaController {
                                 obterEmailLogado(),
                                 dados.valor());
         }
-
 
 }

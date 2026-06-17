@@ -6,6 +6,7 @@ import java.util.Random;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.yurigb.luabank.dto.request.AtualizarContaDTO;
 import com.yurigb.luabank.dto.request.CriarContaDTO;
 import com.yurigb.luabank.exception.badrequest.CpfInvalidoException;
 import com.yurigb.luabank.exception.badrequest.SaldoInsuficienteException;
@@ -16,6 +17,7 @@ import com.yurigb.luabank.exception.conflict.EmailJaCadastradoException;
 import com.yurigb.luabank.exception.notfound.ContaNaoEncontradaException;
 import com.yurigb.luabank.model.ChavePix;
 import com.yurigb.luabank.model.Conta;
+import com.yurigb.luabank.model.TipoChavePix;
 import com.yurigb.luabank.model.TipoOperacao;
 import com.yurigb.luabank.model.Titular;
 import com.yurigb.luabank.repository.ContaRepository;
@@ -102,6 +104,56 @@ public class ContaService {
         conta.setTitular(titularSalvo);
 
         return contaRepository.save(conta);
+    }
+
+    @Transactional
+    public void atualizarConta(AtualizarContaDTO dados, String email) {
+
+        Conta conta = obterContaPorEmail(email);
+        Titular titular = conta.getTitular();
+
+        // Atualizar email
+        if (dados.email() != null && !dados.email().isBlank()) {
+
+            Conta contaExistente = contaRepository.findByEmail(dados.email());
+
+            if (contaExistente != null
+                    && !contaExistente.getId().equals(conta.getId())) {
+                throw new EmailJaCadastradoException();
+            }
+
+            chavePixService.atualizarChave(
+                    email,
+                    TipoChavePix.EMAIL,
+                    dados.email());
+
+            conta.setEmail(dados.email());
+        }
+
+        // Atualizar telefone
+        if (dados.telefone() != null && !dados.telefone().isBlank()) {
+
+            String telefone = dados.telefone().replaceAll("\\D", "");
+
+            if (telefone.length() < 10 || telefone.length() > 11) {
+                throw new TelefoneInvalidoException();
+            }
+
+            chavePixService.atualizarChave(
+                    email,
+                    TipoChavePix.TELEFONE,
+                    telefone);
+
+            titular.setTelefone(telefone);
+        }
+
+        // Atualizar nome
+        if (dados.nome() != null && !dados.nome().isBlank()) {
+            titular.setNome(dados.nome());
+        }
+
+        contaRepository.save(conta);
+        titularRepository.save(titular);
     }
 
     @Transactional

@@ -2,9 +2,11 @@ package com.yurigb.luabank.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.yurigb.luabank.model.Conta;
 import com.yurigb.luabank.model.Operacao;
@@ -15,84 +17,87 @@ import com.yurigb.luabank.repository.OperacaoRepository;
 @Service
 public class OperacaoService {
 
-    private final ContaRepository contaRepository;
-    private final OperacaoRepository operacaoRepository;
+        private final ContaRepository contaRepository;
+        private final OperacaoRepository operacaoRepository;
 
-    public OperacaoService(
-            OperacaoRepository operacaoRepository,
-            ContaRepository contaRepository) {
+        public OperacaoService(
+                        OperacaoRepository operacaoRepository,
+                        ContaRepository contaRepository) {
 
-        this.operacaoRepository = operacaoRepository;
-        this.contaRepository = contaRepository;
-    }
+                this.operacaoRepository = operacaoRepository;
+                this.contaRepository = contaRepository;
+        }
 
-    public void gerarOperacao(
-            BigDecimal valor,
-            TipoOperacao tipoOperacao,
-            Conta conta) {
+        public void gerarOperacao(
+                        BigDecimal valor,
+                        TipoOperacao tipoOperacao,
+                        Conta conta) {
 
-        Operacao operacao = new Operacao();
+                Operacao operacao = new Operacao();
 
-        operacao.setValor(valor);
-        operacao.setTipo(tipoOperacao);
-        operacao.setConta(conta);
-        operacao.setDataHora(LocalDateTime.now());
+                operacao.setValor(valor);
+                operacao.setTipo(tipoOperacao);
+                operacao.setConta(conta);
+                operacao.setDataHora(LocalDateTime.now());
 
-        operacaoRepository.save(operacao);
-    }
+                operacaoRepository.save(operacao);
+        }
 
-    public void gerarTransferenciaEnviada(
-            BigDecimal valor,
-            Conta contaOrigem,
-            Conta contaDestino) {
+        public void gerarTransferenciaEnviada(
+                        BigDecimal valor,
+                        Conta contaOrigem,
+                        Conta contaDestino) {
 
-        Operacao operacao = new Operacao();
+                Operacao operacao = new Operacao();
 
-        operacao.setTipo(
-                TipoOperacao.PIX_ENVIADO);
+                operacao.setTipo(
+                                TipoOperacao.PIX_ENVIADO);
 
-        operacao.setValor(valor);
-        operacao.setConta(contaOrigem);
-        operacao.setDataHora(LocalDateTime.now());
+                operacao.setValor(valor);
+                operacao.setConta(contaOrigem);
+                operacao.setDataHora(LocalDateTime.now());
 
-        operacao.setNomeDestinatario(
-                contaDestino.getTitular().getNome());
+                operacao.setNomeDestinatario(
+                                contaDestino.getTitular().getNome());
 
-        operacao.setNumeroContaDestino(
-                contaDestino.getNumeroConta());
+                operacao.setNumeroContaDestino(
+                                contaDestino.getNumeroConta());
 
-        operacaoRepository.save(operacao);
-    }
+                operacaoRepository.save(operacao);
+        }
 
-    public void gerarTransferenciaRecebida(
-            BigDecimal valor,
-            Conta contaOrigem,
-            Conta contaDestino) {
+        public void gerarTransferenciaRecebida(
+                        BigDecimal valor,
+                        Conta contaOrigem,
+                        Conta contaDestino) {
 
-        Operacao operacao = new Operacao();
+                Operacao operacao = new Operacao();
 
-        operacao.setTipo(
-                TipoOperacao.PIX_RECEBIDO);
+                operacao.setTipo(
+                                TipoOperacao.PIX_RECEBIDO);
 
-        operacao.setValor(valor);
-        operacao.setConta(contaDestino);
-        operacao.setDataHora(LocalDateTime.now());
+                operacao.setValor(valor);
+                operacao.setConta(contaDestino);
+                operacao.setDataHora(LocalDateTime.now());
 
-        operacao.setNomeRemetente(
-                contaOrigem.getTitular().getNome());
+                operacao.setNomeRemetente(
+                                contaOrigem.getTitular().getNome());
 
-        operacao.setNumeroContaOrigem(
-                contaOrigem.getNumeroConta());
+                operacao.setNumeroContaOrigem(
+                                contaOrigem.getNumeroConta());
 
-        operacaoRepository.save(operacao);
-    }
+                operacaoRepository.save(operacao);
+        }
 
-    public List<Operacao> consultarExtrato(String email) {
+        public Page<Operacao> consultarExtrato(
+                        String email,
+                        Pageable pageable) {
 
-        Conta conta = contaRepository.findByEmail(email);
+                Conta conta = contaRepository.findByEmail(email);
 
-        return operacaoRepository
-                .findByContaOrderByDataHoraDesc(conta);
-    }
+                return operacaoRepository.findByConta(
+                                conta,
+                                pageable);
+        }
 
 }

@@ -14,6 +14,7 @@ public record CriarContaDTO(
 
         @NotBlank String cpf,
 
+        
         @NotBlank String telefone,
 
         @NotNull @Min(18) Integer idade,

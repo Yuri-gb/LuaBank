@@ -16,6 +16,8 @@ import com.yurigb.luabank.model.TipoChavePix;
 import com.yurigb.luabank.repository.ChavePixRepository;
 import com.yurigb.luabank.repository.ContaRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ChavePixService {
 
@@ -99,6 +101,23 @@ public class ChavePixService {
                         chave.getTipo(),
                         chave.getValor()))
                 .toList();
+    }
+
+    @Transactional
+    public void atualizarChave(
+            String email,
+            TipoChavePix tipo,
+            String novoValor) {
+
+        Conta conta = contaRepository.findByEmail(email);
+
+        for (ChavePix chave : conta.getChavesPix()) {
+
+            if (chave.getTipo() == tipo) {
+                chave.setValor(novoValor);
+                break;
+            }
+        }
     }
 
     public void removerChave(
