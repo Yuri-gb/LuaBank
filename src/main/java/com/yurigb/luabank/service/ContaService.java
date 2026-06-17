@@ -75,22 +75,23 @@ public class ContaService {
             throw new TelefoneInvalidoException();
         }
 
-        if (titularRepository.findByCpf(cpf) != null) {
-            throw new CpfJaCadastradoException();
-        }
-
         if (contaRepository.findByEmail(dados.email()) != null) {
             throw new EmailJaCadastradoException();
         }
 
-        Titular titular = new Titular();
+        Titular titularSalvo = titularRepository.findByCpf(cpf);
 
-        titular.setNome(dados.nome());
-        titular.setCpf(cpf);
-        titular.setTelefone(telefone);
-        titular.setIdade(dados.idade());
+        if (titularSalvo == null) {
 
-        Titular titularSalvo = titularRepository.save(titular);
+            Titular titular = new Titular();
+
+            titular.setNome(dados.nome());
+            titular.setCpf(cpf);
+            titular.setTelefone(telefone);
+            titular.setIdade(dados.idade());
+
+            titularSalvo = titularRepository.save(titular);
+        }
 
         Conta conta = new Conta();
 
