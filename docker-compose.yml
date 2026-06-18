@@ -1,0 +1,21 @@
+services:
+
+  postgres:
+    image: postgres:18
+
+    environment:
+      POSTGRES_DB: luabank
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "5432:5432"
+
+  luabank:
+    build: .
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - postgres

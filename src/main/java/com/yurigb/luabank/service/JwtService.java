@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
@@ -12,7 +13,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "j7QmL9xT2Kp8VnR4cY6wB1uD5sF3gH8aN0zX2eR7tU9iO4pL6kM1qWvC0yJ3";
+    @Value("${CHAVE_PRIVADA}")
+    private String SECRET_KEY;
 
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
