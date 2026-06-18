@@ -1,7 +1,7 @@
 services:
 
   postgres:
-    image: postgres:18
+    image: postgres:17
 
     environment:
       POSTGRES_DB: luabank
@@ -11,11 +11,21 @@ services:
     ports:
       - "5432:5432"
 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   luabank:
     build: .
+
+    environment:
+      DB_PASSWORD: ${DB_PASSWORD}
+      CHAVE_PRIVADA: ${CHAVE_PRIVADA}
 
     ports:
       - "8080:8080"
 
     depends_on:
       - postgres
+
+volumes:
+  postgres_data:
