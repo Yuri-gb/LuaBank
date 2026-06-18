@@ -1,63 +1,100 @@
-# LuaBank
+# 🏦 LuaBank
 
-API bancária desenvolvida em Java com Spring Boot para estudos de arquitetura de software, APIs REST, autenticação JWT, persistência de dados e boas práticas de desenvolvimento backend.
+API bancária REST desenvolvida com Java e Spring Boot, simulando funcionalidades presentes em instituições financeiras modernas.
 
-## 🚀 Versão Atual
+O projeto foi criado com foco no estudo de desenvolvimento backend, arquitetura em camadas, autenticação JWT, persistência de dados, regras de negócio e boas práticas utilizadas em aplicações corporativas.
 
-**v2.0 - API Bancária REST**
+---
 
-## Funcionalidades
+## 🚀 Funcionalidades
 
-### Autenticação
+### 🔐 Autenticação e Segurança
 
-* Cadastro de usuários
+* Cadastro de contas
 * Login com JWT
-* Validação de credenciais
 * Proteção de rotas autenticadas
-* Verificação de email duplicado
-* Verificação de CPF duplicado
+* Criptografia de senhas com BCrypt
+* Validação de credenciais
+* Tratamento global de exceções
 
-### Conta Bancária
+---
 
-* Criação automática de conta
+### 👤 Gestão de Contas
+
+* Criação de contas bancárias
 * Geração automática do número da conta
-* Consulta de saldo
 * Consulta de perfil
+* Consulta de saldo
+* Atualização de dados da conta
+* Exclusão de contas
+* Suporte a múltiplas contas por titular
+* Validação de email único
 
-### Operações Bancárias
+---
+
+### 💸 Operações Bancárias
 
 * Depósito
 * Saque
-* Transferência entre contas
+* Controle de saldo
+* Validação de saldo insuficiente
+* Registro automático das operações
 
-### Extrato
+---
 
+### ⚡ Sistema Pix
+
+#### Gerenciamento de Chaves Pix
+
+* Cadastro de chave CPF
+* Cadastro de chave Email
+* Cadastro de chave Telefone
+* Cadastro de chave Aleatória
+* Listagem de chaves
+* Remoção de chaves
+
+#### Transferências Pix
+
+* Envio de Pix por chave
+* Localização automática da conta destino
+* Impedimento de Pix para si mesmo
+* Validação de saldo
 * Registro automático de movimentações
+
+---
+
+### 📄 Extrato Bancário
+
+* Consulta de extrato
+* Paginação de resultados
 * Histórico de operações
 * Ordenação por data
-* Identificação de remetente e destinatário em transferências
+* Identificação de remetente e destinatário
+* Registro de:
 
-### Tratamento de Erros
+  * DEPÓSITO
+  * SAQUE
+  * PIX_ENVIADO
+  * PIX_RECEBIDO
 
-* Respostas padronizadas
-* Exceções customizadas
-* Códigos HTTP apropriados
+---
 
-## Tecnologias Utilizadas
+### ✅ Validações
 
-* Java 21
-* Spring Boot
-* Spring Security
-* JWT
-* Spring Data JPA
-* Hibernate
-* Maven
-* Git
-* GitHub
+* CPF obrigatório
+* Telefone obrigatório
+* Email obrigatório
+* Senha obrigatória
+* Idade mínima
+* Email válido
+* Tratamento de Bean Validation
+* Mensagens personalizadas de erro
 
-## Arquitetura
+---
 
-O projeto está organizado em camadas:
+## 🏗️ Arquitetura
+
+O projeto segue uma arquitetura em camadas:
 
 ```text
 src/main/java/com/yurigb/luabank
@@ -69,9 +106,9 @@ src/main/java/com/yurigb/luabank
 ├── exception
 │   ├── badrequest
 │   ├── conflict
-│   ├── handler
 │   ├── notfound
-│   └── unauthorized
+│   ├── unauthorized
+│   └── handler
 ├── model
 ├── repository
 ├── security
@@ -80,15 +117,36 @@ src/main/java/com/yurigb/luabank
 
 ### Responsabilidades
 
-* Controller → Recebe e responde requisições HTTP
-* Service → Regras de negócio
-* Repository → Persistência de dados
-* DTO → Comunicação da API
-* Model → Entidades do sistema
-* Security → Autenticação e autorização
-* Exception → Tratamento global de erros
+| Camada     | Responsabilidade                   |
+| ---------- | ---------------------------------- |
+| Controller | Recebe e responde requisições HTTP |
+| Service    | Implementa regras de negócio       |
+| Repository | Persistência de dados              |
+| DTO        | Comunicação da API                 |
+| Model      | Entidades do domínio               |
+| Security   | Autenticação e autorização         |
+| Exception  | Tratamento global de erros         |
 
-## Endpoints Principais
+---
+
+## 🛠️ Tecnologias
+
+* Java 21
+* Spring Boot
+* Spring Security
+* JWT
+* Spring Data JPA
+* Hibernate
+* PostgreSQL
+* Flyway
+* Maven
+* Swagger / OpenAPI
+* Git
+* GitHub
+
+---
+
+## 🔗 Principais Endpoints
 
 ### Autenticação
 
@@ -99,89 +157,100 @@ POST /auth/login
 ### Conta
 
 ```http
-POST /contas/criar
-GET  /contas/perfil
-GET  /contas/saldo
+POST   /contas/criar
+GET    /contas/perfil
+GET    /contas/saldo
+PUT    /contas/atualizar
+DELETE /contas
 ```
 
-### Operações
+### Pix
 
 ```http
-POST /contas/depositar
-POST /contas/sacar
-POST /contas/transferir
-GET  /contas/extrato
+POST   /pix
+POST   /pix/chaves
+GET    /pix/chaves
+DELETE /pix/chaves/{id}
 ```
 
-## Roadmap
+### Extrato
 
-### v2.0 ✅
+```http
+GET /contas/extrato
+```
 
-* Cadastro de usuários
-* Login com JWT
-* Consulta de saldo
-* Consulta de perfil
+---
+
+## 📚 Documentação
+
+Após iniciar a aplicação:
+
+```text
+http://localhost:8080/swagger-ui.html
+```
+
+ou
+
+```text
+http://localhost:8080/swagger-ui/index.html
+```
+
+(dependendo da versão utilizada)
+
+---
+
+## 🎯 Objetivos do Projeto
+
+* Praticar desenvolvimento backend com Java
+* Aplicar arquitetura em camadas
+* Construir APIs REST
+* Trabalhar com autenticação JWT
+* Utilizar Spring Security
+* Aplicar JPA/Hibernate
+* Implementar regras de negócio reais
+* Aprender modelagem de dados
+* Evoluir para ambientes de produção
+
+---
+
+## 🗺️ Roadmap
+
+### V2 ✅
+
+* Autenticação JWT
+* Perfil
+* Saldo
 * Depósito
 * Saque
-* Transferência entre contas
-* Extrato bancário
-* Histórico de operações
+* Sistema Pix
+* Chaves Pix
+* Extrato
+* Paginação
+* Atualização de conta
+* Exclusão de conta
+* Múltiplas contas por titular
 * Tratamento global de exceções
 
-### v3.0 🚧
+### Próxima Etapa 🚀
 
-#### Backend
+#### Infraestrutura
 
-* Pix
-* Paginação de extrato
-* Filtros de operações
-* Melhorias de segurança
-* Documentação completa da API
+* Docker
+* Docker Compose
+* Deploy
+* AWS
 
-#### Frontend
+#### V3
 
 * Dashboard Web
-* Consulta de saldo
-* Extrato visual
-* Transferências
-* Perfil do usuário
+* Frontend React
+* Integração completa com a API
+* Melhor experiência do usuário
 
-#### Deploy
+---
 
-* Backend em produção
-* Banco de dados em nuvem
-* Ambiente de testes
-
-### v4.0 📋
-
-* Cartão de crédito
-* Limite de crédito
-* Fatura
-* Aplicativo Mobile
-* QR Code
-* Novas funcionalidades financeiras
-
-## Objetivo
-
-Projeto criado para praticar desenvolvimento backend moderno utilizando Java e Spring Boot, simulando funcionalidades presentes em sistemas bancários reais.
-
-Além do aprendizado técnico, o projeto tem como objetivo aprofundar conhecimentos em:
-
-* Programação Orientada a Objetos
-* Arquitetura em Camadas
-* APIs REST
-* Spring Boot
-* Spring Security
-* JWT
-* JPA/Hibernate
-* Banco de Dados
-* Documentação
-* Git e GitHub
-
-O projeto é desenvolvido de forma incremental, com foco em evolução contínua, qualidade de código e aplicação de boas práticas utilizadas em sistemas financeiros reais.
-
-## Autor
+## 👨‍💻 Autor
 
 **Yuri Gabriel**
 
-Estudante de programação com foco em desenvolvimento backend e arquitetura de software.
+Estudante de Desenvolvimento de Sistemas com foco em desenvolvimento backend utilizando Java, Spring Boot e arquitetura de software.
