@@ -12,7 +12,7 @@ import com.yurigb.luabank.exception.badrequest.CpfInvalidoException;
 import com.yurigb.luabank.exception.badrequest.SaldoInsuficienteException;
 import com.yurigb.luabank.exception.badrequest.TelefoneInvalidoException;
 import com.yurigb.luabank.exception.badrequest.TransferenciaInvalidaException;
-import com.yurigb.luabank.exception.conflict.CpfJaCadastradoException;
+
 import com.yurigb.luabank.exception.conflict.EmailJaCadastradoException;
 import com.yurigb.luabank.exception.notfound.ContaNaoEncontradaException;
 import com.yurigb.luabank.model.ChavePix;
@@ -155,6 +155,22 @@ public class ContaService {
 
         contaRepository.save(conta);
         titularRepository.save(titular);
+    }
+
+    @Transactional
+    public void deletarConta(String email) {
+
+        Conta conta = obterContaPorEmail(email);
+
+        Titular titular = conta.getTitular();
+
+        long quantidadeContas = contaRepository.countByTitularId(titular.getId());
+
+        contaRepository.delete(conta);
+
+        if (quantidadeContas <= 1) {
+            titularRepository.delete(titular);
+        }
     }
 
     @Transactional

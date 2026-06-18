@@ -10,18 +10,38 @@ import jakarta.validation.constraints.Size;
 
 public record CriarContaDTO(
 
-        @NotBlank String nome,
+        @NotBlank(message = "O nome é obrigatório")
+        String nome,
 
-        @NotBlank String cpf,
+        @NotBlank(message = "O CPF é obrigatório")
+        String cpf,
 
-        
-        @NotBlank String telefone,
+        @NotBlank(message = "O telefone é obrigatório")
+        String telefone,
 
-        @NotNull @Min(18) Integer idade,
+        @NotNull(message = "A idade é obrigatória")
+        @Min(value = 18, message = "É necessário ser maior de idade")
+        Integer idade,
 
-        @NotBlank @Email @Schema(description = "Email utilizado para login", example = "user@email.com") @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", message = "Email inválido") String email,
+        @NotBlank(message = "O email é obrigatório")
+        @Email(message = "Email inválido")
+        @Schema(
+                description = "Email utilizado para login",
+                example = "user@email.com"
+        )
+        @Pattern(
+                regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+                message = "Email inválido"
+        )
+        String email,
 
-        @NotBlank @Size(min = 6) String senha
+        @NotBlank(message = "A senha é obrigatória")
+        @Size(
+                min = 6,
+                max = 50,
+                message = "A senha deve possuir entre 6 e 50 caracteres"
+        )
+        String senha
 
 ) {
 }
