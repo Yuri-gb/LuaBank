@@ -24,9 +24,10 @@ services:
     build: .
 
     environment:
-      DB_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/luabank
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       CHAVE_PRIVADA: ${CHAVE_PRIVADA}
-
     ports:
       - "8080:8080"
 
