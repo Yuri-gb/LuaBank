@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class JwtService {
@@ -16,10 +17,14 @@ public class JwtService {
     @Value("${CHAVE_PRIVADA}")
     private String SECRET_KEY;
 
-    private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    private SecretKey key;
+
+    @PostConstruct
+    public void init() {
+        this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    }
 
     public String gerarToken(String email) {
-
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date())
@@ -31,7 +36,6 @@ public class JwtService {
     }
 
     public String extrairEmail(String token) {
-
         return Jwts.parser()
                 .verifyWith(key)
                 .build()
@@ -42,8 +46,7 @@ public class JwtService {
 
     public boolean validarToken(String token, String email) {
         try {
-            String emailDoToken = extrairEmail(token);
-            return emailDoToken.equals(email);
+            return extrairEmail(token).equals(email);
         } catch (Exception e) {
             return false;
         }
