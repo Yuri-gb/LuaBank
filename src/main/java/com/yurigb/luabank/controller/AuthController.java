@@ -9,9 +9,12 @@ import com.yurigb.luabank.dto.request.LoginRequestDTO;
 import com.yurigb.luabank.dto.response.LoginResponseDTO;
 import com.yurigb.luabank.service.AuthService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Autenticação", description = "Operações de autenticação e geração de token JWT")
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -21,6 +24,7 @@ public class AuthController {
         this.authService = authService;
     }
 
+    @Operation(summary = "Realizar login", description = "Autentica o usuário e retorna um token JWT válido.")
     @PostMapping("/login")
     public LoginResponseDTO login(
             @Valid @RequestBody LoginRequestDTO dados) {

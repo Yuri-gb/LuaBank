@@ -17,9 +17,12 @@ import com.yurigb.luabank.dto.response.ChavePixResponseDTO;
 import com.yurigb.luabank.service.ChavePixService;
 import com.yurigb.luabank.service.ContaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Pix", description = "Gerenciamento de chaves e transferências Pix")
 @RequestMapping("/pix")
 public class PixController {
 
@@ -33,7 +36,6 @@ public class PixController {
         this.chavePixService = chavePixService;
         this.contaService = contaService;
     }
-    
 
     private String obterEmailLogado() {
         return SecurityContextHolder
@@ -67,6 +69,7 @@ public class PixController {
                 obterEmailLogado());
     }
 
+    @Operation(summary = "Realizar transferência Pix", description = "Efetua uma transferência Pix para outra conta.")
     @PostMapping
     public void enviarPix(
             @Valid @RequestBody PixDTO dados) {

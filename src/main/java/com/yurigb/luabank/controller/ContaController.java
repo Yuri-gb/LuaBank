@@ -24,9 +24,12 @@ import com.yurigb.luabank.model.Conta;
 import com.yurigb.luabank.service.ContaService;
 import com.yurigb.luabank.service.OperacaoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Contas", description = "Gerenciamento de contas bancárias")
 @RequestMapping("/contas")
 public class ContaController {
 
@@ -48,6 +51,7 @@ public class ContaController {
                                 .getName();
         }
 
+        @Operation(summary = "Criar conta", description = "Cria uma nova conta bancária na plataforma.")
         @PostMapping("/criar")
         public ContaResponseDTO criar(
                         @Valid @RequestBody CriarContaDTO dados) {
@@ -87,6 +91,7 @@ public class ContaController {
                                 conta.getSaldo());
         }
 
+        @Operation(summary = "Consultar saldo", description = "Retorna o saldo atual da conta autenticada.")
         @GetMapping("/saldo")
         public String consultarSaldo() {
 
