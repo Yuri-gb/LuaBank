@@ -3,10 +3,12 @@
 API bancária REST desenvolvida com Java e Spring Boot, simulando funcionalidades presentes em instituições financeiras modernas.
 
 🚀 **API em produção:**
-https://luabank.onrender.com
+https://api.luabank.com.br
 
 📚 **Swagger/OpenAPI:**
-https://luabank.onrender.com/swagger-ui/index.html
+https://api.luabank.com.br/swagger-ui/index.html
+
+🔒 **HTTPS habilitado**
 
 ---
 
@@ -14,7 +16,7 @@ https://luabank.onrender.com/swagger-ui/index.html
 
 O LuaBank foi desenvolvido com o objetivo de aplicar conceitos de desenvolvimento backend utilizados no mercado, incluindo autenticação JWT, persistência de dados, arquitetura em camadas, Docker, banco de dados PostgreSQL e deploy em nuvem.
 
-O projeto evoluiu de uma aplicação console para uma API REST completa disponível publicamente.
+O projeto evoluiu de uma aplicação console para uma API REST completa disponível publicamente com domínio próprio.
 
 ---
 
@@ -132,6 +134,8 @@ src/main/java/com/yurigb/luabank
 * Docker
 * Docker Compose
 * Render
+* Domínio personalizado (api.luabank.com.br)
+* HTTPS / SSL
 
 ### Documentação
 
@@ -187,14 +191,16 @@ A aplicação encontra-se publicada em ambiente de produção utilizando:
 * Render
 * Docker
 * PostgreSQL Managed Database
+* Domínio personalizado
+* HTTPS/SSL
 
-API:
+### 🌐 API
 
-https://luabank.onrender.com
+https://api.luabank.com.br
 
-Swagger:
+### 📚 Swagger
 
-https://luabank.onrender.com/swagger-ui/index.html
+https://api.luabank.com.br/swagger-ui/index.html
 
 ---
 
@@ -230,6 +236,8 @@ https://luabank.onrender.com/swagger-ui/index.html
 * Docker
 * Deploy
 * PostgreSQL em produção
+* Domínio personalizado
+* HTTPS
 
 ### Próximos Passos 🚀
 
@@ -250,6 +258,12 @@ https://luabank.onrender.com/swagger-ui/index.html
 
 ## 👨‍💻 Autor
 
-Yuri Gabriel
+**Yuri Gabriel**
 
-Estudante de Desenvolvimento de Sistemas com foco em desenvolvimento Backend utilizando Java, Spring Boot, APIs REST e arquitetura de software.
+Estudante de Desenvolvimento de Sistemas com foco em desenvolvimento Backend utilizando Java, Spring Boot, APIs REST, arquitetura de software e computação em nuvem.
+
+🔗 API: https://api.luabank.com.br
+
+📚 Documentação: https://api.luabank.com.br/swagger-ui/index.html
+
+🐙 GitHub: https://github.com/Yuri-gb
