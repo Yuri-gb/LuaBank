@@ -55,7 +55,7 @@ public class OpenApiConfig {
                                 .name("MIT License")))
 
                 .addServersItem(new Server()
-                        .url("https://luabank.onrender.com")
+                        .url("https://api.luabank.com.br")
                         .description("Ambiente de Produção"))
 
                 .addSecurityItem(
