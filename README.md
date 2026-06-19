@@ -2,7 +2,19 @@
 
 API bancária REST desenvolvida com Java e Spring Boot, simulando funcionalidades presentes em instituições financeiras modernas.
 
-O projeto foi criado com foco no estudo de desenvolvimento backend, arquitetura em camadas, autenticação JWT, persistência de dados, regras de negócio e boas práticas utilizadas em aplicações corporativas.
+🚀 **API em produção:**
+https://luabank.onrender.com
+
+📚 **Swagger/OpenAPI:**
+https://luabank.onrender.com/swagger-ui/index.html
+
+---
+
+## ✨ Sobre o Projeto
+
+O LuaBank foi desenvolvido com o objetivo de aplicar conceitos de desenvolvimento backend utilizados no mercado, incluindo autenticação JWT, persistência de dados, arquitetura em camadas, Docker, banco de dados PostgreSQL e deploy em nuvem.
+
+O projeto evoluiu de uma aplicação console para uma API REST completa disponível publicamente.
 
 ---
 
@@ -17,20 +29,16 @@ O projeto foi criado com foco no estudo de desenvolvimento backend, arquitetura 
 * Validação de credenciais
 * Tratamento global de exceções
 
----
-
 ### 👤 Gestão de Contas
 
 * Criação de contas bancárias
 * Geração automática do número da conta
 * Consulta de perfil
 * Consulta de saldo
-* Atualização de dados da conta
+* Atualização de dados
 * Exclusão de contas
-* Suporte a múltiplas contas por titular
+* Múltiplas contas por titular
 * Validação de email único
-
----
 
 ### 💸 Operações Bancárias
 
@@ -38,63 +46,44 @@ O projeto foi criado com foco no estudo de desenvolvimento backend, arquitetura 
 * Saque
 * Controle de saldo
 * Validação de saldo insuficiente
-* Registro automático das operações
-
----
+* Registro automático de operações
 
 ### ⚡ Sistema Pix
 
-#### Gerenciamento de Chaves Pix
+#### Gerenciamento de Chaves
 
-* Cadastro de chave CPF
-* Cadastro de chave Email
-* Cadastro de chave Telefone
-* Cadastro de chave Aleatória
+* CPF
+* Email
+* Telefone
+* Chave aleatória
 * Listagem de chaves
 * Remoção de chaves
 
-#### Transferências Pix
+#### Transferências
 
-* Envio de Pix por chave
+* Pix por chave
 * Localização automática da conta destino
-* Impedimento de Pix para si mesmo
+* Impedimento de auto transferência
 * Validação de saldo
 * Registro automático de movimentações
 
----
-
-### 📄 Extrato Bancário
+### 📄 Extrato
 
 * Consulta de extrato
-* Paginação de resultados
-* Histórico de operações
+* Paginação
 * Ordenação por data
-* Identificação de remetente e destinatário
-* Registro de:
+* Histórico completo de operações
 
-  * DEPÓSITO
-  * SAQUE
-  * PIX_ENVIADO
-  * PIX_RECEBIDO
+Tipos de movimentação:
 
----
-
-### ✅ Validações
-
-* CPF obrigatório
-* Telefone obrigatório
-* Email obrigatório
-* Senha obrigatória
-* Idade mínima
-* Email válido
-* Tratamento de Bean Validation
-* Mensagens personalizadas de erro
+* DEPÓSITO
+* SAQUE
+* PIX_ENVIADO
+* PIX_RECEBIDO
 
 ---
 
 ## 🏗️ Arquitetura
-
-O projeto segue uma arquitetura em camadas:
 
 ```text
 src/main/java/com/yurigb/luabank
@@ -104,32 +93,27 @@ src/main/java/com/yurigb/luabank
 │   ├── request
 │   └── response
 ├── exception
-│   ├── badrequest
-│   ├── conflict
-│   ├── notfound
-│   ├── unauthorized
-│   └── handler
 ├── model
 ├── repository
 ├── security
 └── service
 ```
 
-### Responsabilidades
-
-| Camada     | Responsabilidade                   |
-| ---------- | ---------------------------------- |
-| Controller | Recebe e responde requisições HTTP |
-| Service    | Implementa regras de negócio       |
-| Repository | Persistência de dados              |
-| DTO        | Comunicação da API                 |
-| Model      | Entidades do domínio               |
-| Security   | Autenticação e autorização         |
-| Exception  | Tratamento global de erros         |
+| Camada     | Responsabilidade   |
+| ---------- | ------------------ |
+| Controller | Requisições HTTP   |
+| Service    | Regras de negócio  |
+| Repository | Persistência       |
+| DTO        | Comunicação da API |
+| Model      | Entidades          |
+| Security   | JWT e autorização  |
+| Exception  | Tratamento global  |
 
 ---
 
 ## 🛠️ Tecnologias
+
+### Backend
 
 * Java 21
 * Spring Boot
@@ -137,10 +121,25 @@ src/main/java/com/yurigb/luabank
 * JWT
 * Spring Data JPA
 * Hibernate
+
+### Banco de Dados
+
 * PostgreSQL
 * Flyway
+
+### Infraestrutura
+
+* Docker
+* Docker Compose
+* Render
+
+### Documentação
+
+* Swagger/OpenAPI
+
+### Ferramentas
+
 * Maven
-* Swagger / OpenAPI
 * Git
 * GitHub
 
@@ -181,35 +180,35 @@ GET /contas/extrato
 
 ---
 
-## 📚 Documentação
+## ☁️ Deploy
 
-Após iniciar a aplicação:
+A aplicação encontra-se publicada em ambiente de produção utilizando:
 
-```text
-http://localhost:8080/swagger-ui.html
-```
+* Render
+* Docker
+* PostgreSQL Managed Database
 
-ou
+API:
 
-```text
-http://localhost:8080/swagger-ui/index.html
-```
+https://luabank.onrender.com
 
-(dependendo da versão utilizada)
+Swagger:
+
+https://luabank.onrender.com/swagger-ui/index.html
 
 ---
 
 ## 🎯 Objetivos do Projeto
 
-* Praticar desenvolvimento backend com Java
-* Aplicar arquitetura em camadas
-* Construir APIs REST
-* Trabalhar com autenticação JWT
-* Utilizar Spring Security
-* Aplicar JPA/Hibernate
-* Implementar regras de negócio reais
-* Aprender modelagem de dados
-* Evoluir para ambientes de produção
+* Desenvolvimento Backend com Java
+* APIs REST
+* Spring Security
+* JWT
+* Arquitetura em Camadas
+* PostgreSQL
+* Docker
+* Deploy em Produção
+* Boas práticas de desenvolvimento
 
 ---
 
@@ -217,40 +216,40 @@ http://localhost:8080/swagger-ui/index.html
 
 ### V2 ✅
 
-* Autenticação JWT
+* JWT
 * Perfil
 * Saldo
 * Depósito
 * Saque
-* Sistema Pix
+* Pix
 * Chaves Pix
 * Extrato
 * Paginação
 * Atualização de conta
 * Exclusão de conta
-* Múltiplas contas por titular
-* Tratamento global de exceções
+* Docker
+* Deploy
+* PostgreSQL em produção
 
-### Próxima Etapa 🚀
+### Próximos Passos 🚀
 
 #### Infraestrutura
 
-* Docker
-* Docker Compose
-* Deploy
 * AWS
+* CI/CD
+* Monitoramento
+* Logs centralizados
 
 #### V3
 
-* Dashboard Web
 * Frontend React
+* Dashboard Web
 * Integração completa com a API
-* Melhor experiência do usuário
 
 ---
 
 ## 👨‍💻 Autor
 
-**Yuri Gabriel**
+Yuri Gabriel
 
-Estudante de Desenvolvimento de Sistemas com foco em desenvolvimento backend utilizando Java, Spring Boot e arquitetura de software.
+Estudante de Desenvolvimento de Sistemas com foco em desenvolvimento Backend utilizando Java, Spring Boot, APIs REST e arquitetura de software.
