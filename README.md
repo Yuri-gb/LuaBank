@@ -1,5 +1,7 @@
 # 🏦 LuaBank
 
+> ⚠️ **Aviso:** A API está hospedada atualmente no plano gratuito do Render. Após períodos de inatividade, a aplicação pode entrar em suspensão automática. Nesses casos, a primeira requisição pode levar alguns segundos para responder enquanto a instância é inicializada novamente. Após a inicialização, a API volta a responder normalmente.
+
 API bancária REST desenvolvida com Java e Spring Boot, simulando funcionalidades presentes em instituições financeiras modernas.
 
 🚀 **API em produção:**
@@ -85,6 +87,48 @@ Tipos de movimentação:
 
 ---
 
+## 🚀 Começando Rápido
+
+### 1. Criar Conta
+
+Utilize o endpoint:
+
+```http
+POST /contas/criar
+```
+
+### 2. Fazer Login
+
+Utilize o endpoint:
+
+```http
+POST /auth/login
+```
+
+### 3. Copiar o JWT
+
+A API retornará um token JWT.
+
+### 4. Autorizar no Swagger
+
+Clique em **Authorize** e informe:
+
+```text
+Bearer seu_token_aqui
+```
+
+### 5. Testar Endpoints Protegidos
+
+Agora você poderá acessar:
+
+* Perfil
+* Saldo
+* Pix
+* Extrato
+* Atualização de conta
+
+---
+
 ## 🏗️ Arquitetura
 
 ```text
@@ -95,6 +139,11 @@ src/main/java/com/yurigb/luabank
 │   ├── request
 │   └── response
 ├── exception
+│   ├── badrequest
+│   ├── conflict
+│   ├── notfound
+│   ├── unauthorized
+│   └── handler
 ├── model
 ├── repository
 ├── security
@@ -127,7 +176,6 @@ src/main/java/com/yurigb/luabank
 ### Banco de Dados
 
 * PostgreSQL
-* Flyway
 
 ### Infraestrutura
 
@@ -151,13 +199,13 @@ src/main/java/com/yurigb/luabank
 
 ## 🔗 Principais Endpoints
 
-### Autenticação
+### 🔐 Autenticação
 
 ```http
 POST /auth/login
 ```
 
-### Conta
+### 👤 Conta
 
 ```http
 POST   /contas/criar
@@ -167,7 +215,7 @@ PUT    /contas/atualizar
 DELETE /contas
 ```
 
-### Pix
+### ⚡ Pix
 
 ```http
 POST   /pix
@@ -176,7 +224,7 @@ GET    /pix/chaves
 DELETE /pix/chaves/{id}
 ```
 
-### Extrato
+### 📄 Extrato
 
 ```http
 GET /contas/extrato
@@ -239,19 +287,41 @@ https://api.luabank.com.br/swagger-ui/index.html
 * Domínio personalizado
 * HTTPS
 
+---
+
 ### Próximos Passos 🚀
 
-#### Infraestrutura
+#### 🧪 Qualidade
+
+* JUnit 5
+* Mockito
+* Testes unitários
+* Testes de integração
+* Cobertura de testes
+
+#### ⚙️ DevOps
+
+* GitHub Actions
+* CI/CD
+
+#### ☁️ Infraestrutura
 
 * AWS
-* CI/CD
+* Rate Limiting
+* Logs de auditoria
 * Monitoramento
-* Logs centralizados
+* Observabilidade
 
-#### V3
+#### 🤝 Colaboração
 
-* Frontend React
-* Dashboard Web
+* Guia de contribuição
+* Colaboradores frontend
+* Desafio LuaBank Web
+
+#### 🌐 V3
+
+* Frontend Web
+* Dashboard
 * Integração completa com a API
 
 ---
@@ -267,3 +337,13 @@ Estudante de Desenvolvimento de Sistemas com foco em desenvolvimento Backend uti
 📚 Documentação: https://api.luabank.com.br/swagger-ui/index.html
 
 🐙 GitHub: https://github.com/Yuri-gb
+
+---
+
+## ⭐ Contribuições
+
+Sugestões, melhorias e feedbacks são sempre bem-vindos.
+
+Caso encontre algum problema ou tenha alguma ideia para evoluir o projeto, fique à vontade para abrir uma Issue ou Pull Request.
+
+O objetivo do LuaBank é continuar evoluindo como uma plataforma de estudo e prática de desenvolvimento backend moderno utilizando Java e Spring Boot.
